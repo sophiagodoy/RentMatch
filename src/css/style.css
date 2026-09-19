@@ -1,0 +1,231 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5faff;
+    color: #07164d;
+    margin: 0;
+}
+
+.logo {
+    color: #0b397e;
+    font-size: 36px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.logo i {
+    color: #0877ee;
+    font-size: 48px;
+    margin-right: 10px;
+}
+
+.logo span {
+    color: #0877ee;
+}
+
+.cabecalho {
+    background-color: white;
+}
+
+.cabecalho-conteudo {
+    width: 1140px;
+    max-width: 90%;
+    margin: auto;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu a {
+    color: #07164d;
+    font-size: 18px;
+    margin-left: 30px;
+    text-decoration: none;
+}
+
+.menu .botao-cadastro {
+    color: #0877ee;
+    border: 1px solid #0877ee;
+    border-radius: 8px;
+    padding: 12px 25px;
+}
+
+.conteudo-principal {
+    width: 1140px;
+    max-width: 90%;
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+.caixa-login {
+    min-height: 760px;
+    background-color: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px #d5e2ee;
+    display: flex;
+}
+
+.lado-esquerdo {
+    width: 50%;
+    color: white;
+    background-color: #086bcf;
+    background-image: url("https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=80");
+    background-size: cover;
+    background-position: center;
+}
+
+.conteudo-apresentacao {
+    background-color: rgba(0, 92, 190, 0.85);
+    height: 100%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.conteudo-apresentacao h1 {
+    font-size: 52px;
+    font-weight: bold;
+}
+
+.conteudo-apresentacao h2 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.conteudo-apresentacao hr {
+    width: 60px;
+    border: 2px solid white;
+    margin: 30px 0;
+}
+
+.descricao {
+    font-size: 21px;
+    max-width: 430px;
+}
+
+.conteudo-apresentacao p {
+    font-size: 18px;
+}
+
+.conteudo-apresentacao i {
+    font-size: 28px;
+    margin-right: 15px;
+}
+
+.localizacao {
+    width: 340px;
+    background-color: rgba(255, 255, 255, 0.20);
+    border-radius: 8px;
+    margin-top: 25px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.lado-direito {
+    width: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+
+.formulario-login {
+    width: 100%;
+    max-width: 620px;
+    margin: auto;
+    padding: 50px;
+}
+
+.formulario-login h2 {
+    color: #0b397e;
+    font-size: 44px;
+    font-weight: bold;
+}
+
+.subtitulo {
+    color: #647895;
+    font-size: 18px;
+    margin-bottom: 45px;
+}
+
+.grupo-formulario {
+    margin-bottom: 25px;
+}
+
+.grupo-formulario label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.campo-formulario {
+    min-height: 62px;
+    border: 1px solid #bdcde0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.campo-formulario i {
+    color: #647895;
+    font-size: 24px;
+    margin: 0 18px;
+}
+
+.campo-formulario input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    font-size: 18px;
+}
+
+.link-senha {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.botao-entrar {
+    width: 100%;
+    padding: 15px;
+    color: white;
+    background-color: #0877ee;
+    border: 0;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.separador {
+    margin: 45px 0 25px;
+    display: flex;
+    align-items: center;
+}
+
+.separador hr {
+    width: 45%;
+}
+
+.separador p {
+    color: #647895;
+    margin: 0 20px;
+}
+
+.texto-cadastro {
+    color: #647895;
+    text-align: center;
+    font-size: 18px;
+}
+
+@media (max-width: 900px) {
+    .menu,
+    .lado-esquerdo {
+        display: none;
+    }
+
+    .lado-direito {
+        width: 100%;
+    }
+}
