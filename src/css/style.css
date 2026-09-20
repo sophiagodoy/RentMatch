@@ -182,6 +182,14 @@ body {
     font-size: 18px;
 }
 
+.campo-sem-icone input {
+    padding-left: 18px;
+}
+
+.campo-sem-icone i {
+    margin-left: 12px;
+}
+
 .link-senha {
     text-align: right;
     margin-bottom: 30px;
@@ -217,6 +225,26 @@ body {
     color: #647895;
     text-align: center;
     font-size: 18px;
+}
+
+.formulario-cadastro {
+    max-width: 560px;
+}
+
+.formulario-cadastro .subtitulo {
+    margin-bottom: 35px;
+}
+
+.formulario-cadastro .grupo-formulario {
+    margin-bottom: 22px;
+}
+
+.cadastro-apresentacao {
+    padding: 80px 55px 45px;
+}
+
+.cadastro-apresentacao .descricao {
+    max-width: 470px;
 }
 
 @media (max-width: 900px) {
