@@ -1,0 +1,647 @@
+/* =========================================================
+   RentMatch - estilos das telas internas (home e perfil)
+
+   Carregar DEPOIS do style.css. Reaproveita a mesma fonte (Arial),
+   as mesmas cores e os componentes que já existem (cabecalho, logo,
+   menu, grupo-formulario, campo-formulario, botao-entrar, subtitulo).
+
+   Cores do projeto:
+   #0877ee azul principal    #0b397e azul escuro    #07164d texto
+   #647895 texto secundário  #bdcde0 bordas         #f5faff fundo
+   Cores de classificação: verde = Oportunidade, azul = Preço justo,
+   vermelho = Caro.
+   ========================================================= */
+
+/* ---------- Cabeçalho das telas internas ---------- */
+.cabecalho-conteudo {
+    flex-wrap: wrap;
+    gap: 10px 30px;
+}
+
+.menu.menu-app {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 30px;
+}
+
+.menu-app a {
+    margin-left: 0;
+}
+
+.menu-app a.ativo {
+    color: #0877ee;
+    font-weight: bold;
+}
+
+.menu-app .botao-cadastro i {
+    margin-right: 8px;
+}
+
+.menu-app .botao-cadastro.ativo {
+    color: white;
+    background-color: #0877ee;
+}
+
+/* ---------- Foco visível (acessibilidade) ---------- */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #0877ee;
+    outline-offset: 3px;
+}
+
+.boas-vindas a:focus-visible {
+    outline-color: white;
+}
+
+.campo-formulario:focus-within {
+    border-color: #0877ee;
+    box-shadow: 0 0 0 3px #cfe3fb;
+}
+
+/* ---------- Estrutura da página ---------- */
+.conteudo-interno {
+    padding-top: 30px;
+    display: grid;
+    gap: 25px;
+}
+
+/* Evita que a tabela larga estique a grade e crie rolagem horizontal na página */
+.conteudo-interno > *,
+.grade-home > *,
+.grade-perfil > *,
+.perfil-conteudo > * {
+    min-width: 0;
+}
+
+.cartao {
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px #d5e2ee;
+    padding: 35px;
+}
+
+.cartao h2 {
+    color: #0b397e;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 8px;
+}
+
+.cartao .subtitulo {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.titulo-secao {
+    color: #0b397e;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 15px;
+}
+
+.cabecalho-secao {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 15px;
+    margin-bottom: 20px;
+}
+
+.cabecalho-secao h2 {
+    margin: 0;
+}
+
+.link-secao {
+    color: #0877ee;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.link-secao:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Faixa de boas-vindas (home) ---------- */
+.boas-vindas {
+    color: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px #d5e2ee;
+    background-color: #086bcf;
+    background-image: url("https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=80");
+    background-size: cover;
+    background-position: center;
+}
+
+.boas-vindas-conteudo {
+    background-color: rgba(0, 92, 190, 0.85);
+    padding: 50px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.boas-vindas .saudacao {
+    font-size: 20px;
+    margin: 0 0 12px;
+}
+
+.boas-vindas h1 {
+    font-size: 44px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0 0 20px;
+}
+
+.boas-vindas .descricao {
+    font-size: 20px;
+    max-width: 470px;
+    margin: 0 0 30px;
+}
+
+.boas-vindas-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.botao-claro,
+.botao-contorno-claro {
+    display: inline-block;
+    padding: 15px 28px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.botao-claro {
+    color: #0877ee;
+    background-color: white;
+    border: 2px solid white;
+}
+
+.botao-claro i {
+    margin-right: 8px;
+}
+
+.botao-contorno-claro {
+    color: white;
+    border: 2px solid white;
+}
+
+/* Exemplo de avaliação dentro da faixa de boas-vindas */
+.comparacao {
+    background-color: rgba(255, 255, 255, 0.20);
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.comparacao-titulo {
+    font-size: 16px;
+    margin: 0 0 20px;
+}
+
+.barra-linha {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.barra {
+    height: 12px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.25);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.barra-preenchimento {
+    height: 100%;
+    border-radius: 6px;
+}
+
+.barra-anunciado {
+    background-color: #ff9a9a;
+}
+
+.barra-estimado {
+    background-color: #7ee0a5;
+}
+
+.comparacao-resultado {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    margin: 5px 0 0;
+}
+
+/* ---------- Resumo (home) ---------- */
+.cartoes-resumo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.cartao-resumo {
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px #d5e2ee;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.icone-resumo {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #0877ee;
+    background-color: #e5f1fe;
+}
+
+.icone-resumo.oportunidade {
+    color: #1b7f4a;
+    background-color: #e6f6ec;
+}
+
+.icone-resumo.caro {
+    color: #b63232;
+    background-color: #fdeaea;
+}
+
+.cartao-resumo strong {
+    display: block;
+    color: #0b397e;
+    font-size: 34px;
+    line-height: 1.1;
+}
+
+.cartao-resumo span {
+    color: #647895;
+    font-size: 16px;
+}
+
+/* ---------- Avaliar + como funciona (home) ---------- */
+.grade-home {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.grade-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+}
+
+.grade-formulario .grupo-formulario {
+    margin-bottom: 20px;
+}
+
+.cartao .campo-formulario input,
+.cartao .campo-formulario select {
+    width: 100%;
+    min-height: 60px;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    color: #07164d;
+    font-size: 18px;
+}
+
+.cartao .campo-formulario select {
+    padding: 0 14px 0 18px;
+}
+
+.cartao .campo-formulario input {
+    padding-left: 18px;
+}
+
+.cartao .campo-formulario i + input {
+    padding-left: 0;
+}
+
+.campo-formulario .prefixo {
+    color: #647895;
+    font-size: 18px;
+    margin-left: 18px;
+}
+
+.campo-formulario .prefixo + input {
+    padding-left: 8px;
+}
+
+.botao-formulario {
+    width: auto;
+    padding: 15px 35px;
+}
+
+a.botao-entrar {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.passos {
+    list-style: none;
+    margin: 0 0 25px;
+    padding: 0;
+    counter-reset: passo;
+}
+
+.passos li {
+    counter-increment: passo;
+    position: relative;
+    padding-left: 56px;
+    margin-bottom: 22px;
+    color: #647895;
+    font-size: 17px;
+    line-height: 1.4;
+}
+
+.passos li::before {
+    content: counter(passo);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #0877ee;
+    font-weight: bold;
+}
+
+.passos li strong {
+    display: block;
+    color: #07164d;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.dica {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background-color: #f5faff;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.dica i {
+    color: #0877ee;
+    font-size: 22px;
+}
+
+/* ---------- Tabela de avaliações recentes ---------- */
+.tabela-rolagem {
+    overflow-x: auto;
+}
+
+.tabela {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 17px;
+}
+
+.tabela th {
+    color: #647895;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    padding: 0 12px 12px;
+    border-bottom: 1px solid #bdcde0;
+}
+
+.tabela td {
+    padding: 18px 12px;
+    border-bottom: 1px solid #e3ecf5;
+    vertical-align: middle;
+}
+
+.tabela tr:last-child td {
+    border-bottom: 0;
+}
+
+.tabela td strong {
+    display: block;
+}
+
+.tabela td small {
+    color: #647895;
+    font-size: 15px;
+}
+
+.selo {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.selo-caro {
+    color: #b63232;
+    background-color: #fdeaea;
+}
+
+.selo-justo {
+    color: #0b5fc4;
+    background-color: #e5f1fe;
+}
+
+.selo-oportunidade {
+    color: #1b7f4a;
+    background-color: #e6f6ec;
+}
+
+/* ---------- Perfil ---------- */
+.grade-perfil {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.perfil-lateral {
+    text-align: center;
+}
+
+.avatar {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #0877ee;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.perfil-lateral h1 {
+    color: #0b397e;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 5px;
+}
+
+.perfil-lateral .email {
+    color: #647895;
+    font-size: 17px;
+    margin: 0 0 5px;
+    word-break: break-word;
+}
+
+.perfil-lateral .desde {
+    color: #647895;
+    font-size: 16px;
+    margin: 0 0 25px;
+}
+
+.perfil-numeros {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 20px 0;
+    margin-bottom: 25px;
+    border-top: 1px solid #e3ecf5;
+    border-bottom: 1px solid #e3ecf5;
+}
+
+.perfil-numeros strong {
+    display: block;
+    color: #0b397e;
+    font-size: 26px;
+}
+
+.perfil-numeros span {
+    color: #647895;
+    font-size: 15px;
+}
+
+.botao-secundario {
+    display: block;
+    padding: 15px;
+    color: #0877ee;
+    background-color: white;
+    border: 1px solid #0877ee;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+}
+
+.link-sair {
+    display: inline-block;
+    margin-top: 22px;
+    color: #647895;
+    font-size: 17px;
+    text-decoration: none;
+}
+
+.link-sair:hover {
+    color: #b63232;
+}
+
+.link-sair i {
+    margin-right: 8px;
+}
+
+.perfil-conteudo {
+    display: grid;
+    gap: 25px;
+}
+
+.aviso-privacidade {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.aviso-privacidade > i {
+    color: #0877ee;
+    font-size: 38px;
+    line-height: 1;
+}
+
+.aviso-privacidade p {
+    color: #647895;
+    font-size: 17px;
+    margin: 0;
+}
+
+/* ---------- Telas menores ---------- */
+@media (max-width: 900px) {
+    .boas-vindas-conteudo {
+        grid-template-columns: 1fr;
+        padding: 35px;
+    }
+
+    .boas-vindas h1 {
+        font-size: 34px;
+    }
+
+    .cartoes-resumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grade-home,
+    .grade-perfil {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .logo {
+        font-size: 26px;
+    }
+
+    .logo i {
+        font-size: 34px;
+    }
+
+    .menu.menu-app {
+        gap: 8px 20px;
+    }
+
+    .menu-app a {
+        font-size: 16px;
+    }
+
+    .boas-vindas h1 {
+        font-size: 28px;
+    }
+
+    .cartoes-resumo,
+    .grade-formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .cartao {
+        padding: 25px;
+    }
+}

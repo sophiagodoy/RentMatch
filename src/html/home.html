@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentMatch - Início</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icones do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS do projeto -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- CSS das telas internas (home e perfil) - carregar depois do style.css -->
+    <link rel="stylesheet" href="../css/app.css">
+</head>
+
+<body>
+    <!-- Cabecalho -->
+    <div class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a class="logo" href="home.html">
+                <i class="bi bi-house-door-fill"></i>
+                Rent<span>Match</span>
+            </a>
+
+            <div class="menu menu-app">
+                <a class="ativo" href="home.html">Início</a>
+                <a href="#avaliar">Avaliar</a>
+                <a href="#historico">Histórico</a>
+                <a href="about.html">Sobre</a>
+                <!-- BACKEND: trocar "Lucas" pelo primeiro nome do usuario logado -->
+                <a class="botao-cadastro" href="profile.html"><i class="bi bi-person-circle"></i>Lucas</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteudo principal -->
+    <div class="conteudo-principal conteudo-interno">
+
+        <!-- Boas-vindas -->
+        <section class="boas-vindas">
+            <div class="boas-vindas-conteudo">
+                <div>
+                    <!-- BACKEND: nome do usuario logado -->
+                    <p class="saudacao">Olá, Lucas!</p>
+                    <h1>Esse aluguel está justo? Descubra em segundos.</h1>
+                    <p class="descricao">
+                        Informe os dados do imóvel e veja o valor estimado, a classificação da oferta
+                        e os fatores que mais pesaram no resultado.
+                    </p>
+
+                    <div class="boas-vindas-botoes">
+                        <a class="botao-claro" href="#avaliar"><i class="bi bi-search"></i>Avaliar um imóvel</a>
+                        <a class="botao-contorno-claro" href="#historico">Ver histórico</a>
+                    </div>
+                </div>
+
+                <!-- Exemplo fixo do que o RentMatch entrega -->
+                <div class="comparacao" role="img"
+                    aria-label="Exemplo: anunciado por R$ 1.800, estimado em R$ 1.650, classificado como Caro">
+                    <p class="comparacao-titulo">Exemplo de avaliação: apartamento de 2 quartos no Cambuí</p>
+
+                    <div class="barra-linha">
+                        <span>Anunciado</span>
+                        <strong>R$ 1.800</strong>
+                    </div>
+                    <div class="barra">
+                        <div class="barra-preenchimento barra-anunciado" style="width: 100%;"></div>
+                    </div>
+
+                    <div class="barra-linha">
+                        <span>Estimado</span>
+                        <strong>R$ 1.650</strong>
+                    </div>
+                    <div class="barra">
+                        <div class="barra-preenchimento barra-estimado" style="width: 92%;"></div>
+                    </div>
+
+                    <p class="comparacao-resultado">
+                        <span class="selo selo-caro">Caro</span>
+                        R$ 150 acima do valor estimado
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumo das avaliacoes -->
+        <section>
+            <h2 class="titulo-secao">Suas avaliações</h2>
+
+            <!-- BACKEND: preencher com os totais do usuario logado -->
+            <div class="cartoes-resumo">
+                <div class="cartao-resumo">
+                    <div class="icone-resumo"><i class="bi bi-clipboard-data"></i></div>
+                    <div>
+                        <strong>14</strong>
+                        <span>Total de avaliações</span>
+                    </div>
+                </div>
+
+                <div class="cartao-resumo">
+                    <div class="icone-resumo oportunidade"><i class="bi bi-stars"></i></div>
+                    <div>
+                        <strong>5</strong>
+                        <span>Oportunidades</span>
+                    </div>
+                </div>
+
+                <div class="cartao-resumo">
+                    <div class="icone-resumo"><i class="bi bi-check2-circle"></i></div>
+                    <div>
+                        <strong>6</strong>
+                        <span>Preço justo</span>
+                    </div>
+                </div>
+
+                <div class="cartao-resumo">
+                    <div class="icone-resumo caro"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                        <strong>3</strong>
+                        <span>Caros</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nova avaliacao + como funciona -->
+        <div class="grade-home">
+            <section class="cartao" id="avaliar">
+                <h2>Avalie seu aluguel</h2>
+                <p class="subtitulo">Informe os dados do imóvel para uma estimativa justa.</p>
+
+                <!-- BACKEND: enviar para a rota de avaliacao -->
+                <form action="#" method="post">
+                    <div class="grade-formulario">
+                        <div class="grupo-formulario">
+                            <label for="bairro">Bairro ou região</label>
+                            <div class="campo-formulario">
+                                <select id="bairro" name="bairro">
+                                    <option value="" selected disabled>Selecione</option>
+                                    <option>Barão Geraldo</option>
+                                    <option>Bosque</option>
+                                    <option>Cambuí</option>
+                                    <option>Centro</option>
+                                    <option>Guanabara</option>
+                                    <option>Nova Campinas</option>
+                                    <option>Sousas</option>
+                                    <option>Taquaral</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="tipo">Tipo do imóvel</label>
+                            <div class="campo-formulario">
+                                <select id="tipo" name="tipo">
+                                    <option value="" selected disabled>Selecione</option>
+                                    <option>Apartamento</option>
+                                    <option>Casa</option>
+                                    <option>Kitnet</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="metragem">Metragem (m²)</label>
+                            <div class="campo-formulario">
+                                <input type="number" id="metragem" name="metragem" min="0" placeholder="Ex.: 65">
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="quartos">Quartos</label>
+                            <div class="campo-formulario">
+                                <input type="number" id="quartos" name="quartos" min="0" placeholder="Ex.: 2">
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="vagas">Vagas</label>
+                            <div class="campo-formulario">
+                                <input type="number" id="vagas" name="vagas" min="0" placeholder="Ex.: 1">
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="valor-anunciado">Valor anunciado</label>
+                            <div class="campo-formulario">
+                                <span class="prefixo">R$</span>
+                                <input type="number" id="valor-anunciado" name="valor-anunciado" min="0"
+                                    placeholder="Ex.: 1800">
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="condominio">Condomínio</label>
+                            <div class="campo-formulario">
+                                <span class="prefixo">R$</span>
+                                <input type="number" id="condominio" name="condominio" min="0" placeholder="Ex.: 450">
+                            </div>
+                        </div>
+
+                        <div class="grupo-formulario">
+                            <label for="iptu">IPTU</label>
+                            <div class="campo-formulario">
+                                <span class="prefixo">R$</span>
+                                <input type="number" id="iptu" name="iptu" min="0" placeholder="Ex.: 120">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="botao-entrar">Avaliar imóvel</button>
+                </form>
+            </section>
+
+            <section class="cartao">
+                <h2>Como funciona</h2>
+                <p class="subtitulo">Do anúncio ao resultado em três passos.</p>
+
+                <ol class="passos">
+                    <li>
+                        <strong>Informe o imóvel</strong>
+                        Bairro, tipo, metragem, quartos, vagas e taxas.
+                    </li>
+                    <li>
+                        <strong>Veja a estimativa</strong>
+                        Comparamos o valor anunciado com o estimado e classificamos como Caro, Preço justo
+                        ou Oportunidade.
+                    </li>
+                    <li>
+                        <strong>Entenda o resultado</strong>
+                        Mostramos os fatores que mais pesaram na estimativa.
+                    </li>
+                </ol>
+
+                <p class="dica">
+                    <i class="bi bi-bookmark-check"></i>
+                    <span>Salve a avaliação para consultar depois no seu histórico.</span>
+                </p>
+            </section>
+        </div>
+
+        <!-- Avaliacoes recentes -->
+        <section class="cartao" id="historico">
+            <div class="cabecalho-secao">
+                <h2>Avaliações recentes</h2>
+                <!-- BACKEND: link para a tela de historico completo -->
+                <a class="link-secao" href="#">Ver todas</a>
+            </div>
+
+            <!-- BACKEND: gerar as linhas a partir das avaliacoes salvas do usuario -->
+            <div class="tabela-rolagem">
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>Imóvel</th>
+                            <th>Anunciado</th>
+                            <th>Estimado</th>
+                            <th>Classificação</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cambuí</strong><small>2 quartos, 65 m²</small></td>
+                            <td>R$ 1.800</td>
+                            <td>R$ 1.650</td>
+                            <td><span class="selo selo-caro">Caro</span></td>
+                            <td>04/10/2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Taquaral</strong><small>1 quarto, 38 m²</small></td>
+                            <td>R$ 1.450</td>
+                            <td>R$ 1.520</td>
+                            <td><span class="selo selo-justo">Preço justo</span></td>
+                            <td>02/10/2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Barão Geraldo</strong><small>3 quartos, 90 m²</small></td>
+                            <td>R$ 2.900</td>
+                            <td>R$ 3.400</td>
+                            <td><span class="selo selo-oportunidade">Oportunidade</span></td>
+                            <td>29/09/2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Centro</strong><small>2 quartos, 58 m²</small></td>
+                            <td>R$ 2.100</td>
+                            <td>R$ 2.050</td>
+                            <td><span class="selo selo-justo">Preço justo</span></td>
+                            <td>25/09/2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
