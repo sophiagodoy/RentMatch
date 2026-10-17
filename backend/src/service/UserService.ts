@@ -1,7 +1,8 @@
-import type { UserLoginDTO, UserRegisterDTO } from "../models/User.js";
+import type { UserChangePasswordDTO, UserLoginDTO, UserRegisterDTO, UserUpdateProfileDTO } from "../models/User.js";
 import type { UserRepository } from "../repository/UserRepository.js";
 import { hash, compare } from "bcryptjs"
 import { generateToken } from "../utils/TokenService.js";
+import { AppError } from "../utils/AppError.js";
 
 export class UserService {
     constructor(private readonly userRepository: UserRepository) {}
@@ -21,5 +22,21 @@ export class UserService {
         if (!passwordCorrect) throw new Error("Email ou senha incorretos")
         const token = await generateToken(user.id)
         return token
+    }
+
+    async getProfile(userId: string) {
+        return this.userRepository.findById(userId)
+    }
+
+    async updateProfile(userId: string, data: UserUpdateProfileDTO) {
+        return this.userRepository.update(userId, data)
+    }
+
+    async changePassword(userId: string, data: UserChangePasswordDTO) {
+        const user = await this.userRepository.findEntityById(userId)
+        const passwordCorrect = await compare(data.currentPassword, user.password)
+        if (!passwordCorrect) throw new AppError("Senha atual incorreta", 400)
+        const password = await hash(data.newPassword, 12)
+        await this.userRepository.update(userId, { password })
     }
 }

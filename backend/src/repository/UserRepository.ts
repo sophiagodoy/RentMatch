@@ -34,6 +34,11 @@ export class UserRepository {
         return UserResponseSchemaDto.parse(user)
     }
 
+    async findEntityById(id: string) {
+        const user = await prisma.user.findUnique({ where: { id } })
+        return UserEntitySchema.parse(user)
+    }
+
     async findByEmail(email: string) {
         const userFound = await prisma.user.findUnique({
             where: {email}
