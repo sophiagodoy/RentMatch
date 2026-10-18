@@ -32,6 +32,7 @@ formulário (bairro, tipo, m², quartos, vagas, taxas, valor anunciado)
 | `preparo.py` | Lê e limpa o CSV (duplicados, faixas, outliers), normaliza texto, separa treino/teste sem vazamento, valida a entrada do usuário (RF15). |
 | `candidatos.py` | Os modelos comparados: `baseline`, `ridge`, `rf` e `hgb`, e as grades do `--ajustar`. |
 | `treinar.py` | Compara os candidatos, avalia no teste, calcula o intervalo, salva modelo e metadados. |
+| `validar.py` | Executa somente a validação cruzada e gera comparação, métricas por dobra e análise em `validacao/`. |
 | `explicador.py` | Contribuição de cada característica em R$ (valores de Shapley exatos, sem depender da lib `shap`). |
 | `classificador.py` | Compara anunciado com estimado e classifica a oferta (RF07 e RF08). |
 | `prever.py` | Junta tudo: é o que o backend chama. Funciona como biblioteca, linha de comando ou JSON por stdin. |
@@ -62,6 +63,26 @@ python -m unittest test_modelo -v
 
 O treino cria em `artefatos/`: `modelo_<versão>.joblib`, `metadados_<versão>.json`
 e as cópias `modelo_atual.joblib` e `metadados_atual.json`, que o `prever.py` usa.
+
+### Executar somente a validação
+
+Na raiz do projeto:
+
+```bash
+python modelo_ml/validar.py
+python modelo_ml/validar.py --candidatos baseline ridge  # comparação mais rápida
+python -m unittest discover -s modelo_ml -p "test_validar.py" -v
+```
+
+O script mantém o holdout de aproximadamente 20% e faz validação cruzada
+agrupada com 5 dobras nos outros 80%, usando os parâmetros padrão dos candidatos.
+Os relatórios ficam em `modelo_ml/validacao/`: `resultados_validacao.csv`,
+`metricas_por_dobra.csv`, `previsoes_validacao.csv`, `relatorio_validacao.json`
+e `analise_validacao.md`. Use `--csv` e `--saida` para mudar a entrada e a pasta.
+
+Esta execução não avalia o teste nem salva um modelo final. A análise documenta
+a limitação herdada da limpeza de outliers antes da divisão; os resultados são
+preliminares e precisam dessa revisão e do teste final para concluir sobre o uso.
 
 ## 4. O que `treinar.py` faz
 
