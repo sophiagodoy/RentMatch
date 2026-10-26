@@ -53,7 +53,7 @@ def _pipeline(pre, estimador):
 
 
 def _pre_linear():
-    num = Pipeline([("imp", SimpleImputer(strategy="median", add_indicator=True)),
+    num = Pipeline([("imp", SimpleImputer(strategy="median", add_indicator=True, keep_empty_features=True)),
                     ("log", FunctionTransformer(np.log1p)), ("esc", StandardScaler())])
     return ColumnTransformer([
         ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cfg.FEATURES_CAT),
@@ -63,7 +63,7 @@ def _pre_linear():
 def _pre_floresta():
     return ColumnTransformer([
         ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cfg.FEATURES_CAT),
-        ("num", SimpleImputer(strategy="median"), cfg.FEATURES_NUM)])
+        ("num", SimpleImputer(strategy="median", keep_empty_features=True), cfg.FEATURES_NUM)])
 
 
 def _pre_hgb():
@@ -71,7 +71,7 @@ def _pre_hgb():
     return ColumnTransformer([
         ("cat", OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1,
                                encoded_missing_value=-1), cfg.FEATURES_CAT),
-        ("num", "passthrough", cfg.FEATURES_NUM)])
+        ("num", SimpleImputer(strategy="median", keep_empty_features=True), cfg.FEATURES_NUM)])
 
 
 def construir_candidatos(semente: int = cfg.SEMENTE) -> dict:

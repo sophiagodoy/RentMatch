@@ -118,6 +118,27 @@ class TestValidacao(unittest.TestCase):
             validar.executar(csv=self.csv, saida=self.saida, verboso=False)
         self.assertFalse(self.saida.exists())
 
+    def test_csv_vazio_ou_sem_imoveis_validos(self):
+        original = pd.read_csv(self.csv)
+        casos = {
+            "sem_conteudo": "",
+            "somente_cabecalho": original.iloc[:0].to_csv(index=False),
+            "todos_invalidos": original.assign(aluguel=-1).to_csv(index=False),
+        }
+        for nome, conteudo in casos.items():
+            with self.subTest(caso=nome):
+                self.csv.write_text(conteudo, encoding="utf-8")
+                if nome == "sem_conteudo":
+                    with self.assertRaises(pd.errors.EmptyDataError):
+                        self.executar(candidatos=["baseline"])
+                else:
+                    limpo, rel = limpar(carregar_csv(self.csv))
+                    self.assertTrue(limpo.empty)
+                    self.assertEqual(rel["linhas_finais"], 0)
+                    with self.assertRaisesRegex(ValueError, "Só 0 imóveis"):
+                        self.executar(candidatos=["baseline"])
+                self.assertFalse(self.saida.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

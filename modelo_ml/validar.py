@@ -27,9 +27,9 @@ from treinar import metricas, metricas_por_segmento
 METRICAS = ["mae", "rmse", "r2", "mape", "mediana_ape"]
 SAIDA_PADRAO = cfg.BASE_DIR / "validacao"
 LIMITACOES = [
-    "A limpeza de outliers usa estatísticas da base inteira antes da divisão, "
-    "como em treinar.py. Isso pode tornar a avaliação otimista. Para uma avaliação "
-    "mais rigorosa, essas estatísticas devem ser aprendidas apenas no treino de cada dobra.",
+    "Extremos dentro das faixas fixas são preservados. Não há remoção estatística "
+    "de outliers antes da divisão. Endereços sem cidade identificável são mantidos "
+    "e precisam de revisão na coleta.",
     "As métricas são usadas para escolher o modelo; a avaliação final depende do teste reservado.",
     "Não foi definido pelo grupo um limite de erro aceitável para aprovar o modelo.",
     "A validação usa os parâmetros padrão dos candidatos, sem busca de hiperparâmetros.",
@@ -76,7 +76,7 @@ def _analise(relatorio, comparacao, previsoes):
         f"- Linhas lidas: {limpeza['linhas_lidas']}; após limpeza: {limpeza['linhas_finais']}.",
         f"- Descartes: {limpeza['duplicados_removidos']} duplicados, "
         f"{limpeza['fora_das_faixas_ou_sem_dados']} fora das faixas/sem dados e "
-        f"{limpeza['outliers_removidos']} outliers.",
+        f"{limpeza['outliers_removidos']} outliers e {limpeza['fora_da_cidade']} fora da cidade.",
         f"- Treino usado na validação cruzada: {divisao['linhas_treino']} anúncios "
         f"({_numero(divisao['percentual_treino'])}%).",
         f"- Teste reservado: {divisao['linhas_teste_reservado']} anúncios "
@@ -84,7 +84,7 @@ def _analise(relatorio, comparacao, previsoes):
         "Foram reutilizadas a limpeza, a divisão agrupada e as funções de métricas do projeto. "
         "Anúncios do mesmo grupo ficam do mesmo lado da divisão e da dobra. "
         "Imputação, agrupamento de categorias raras e codificação são ajustados pelos pipelines "
-        "apenas no treino de cada dobra. A limitação da limpeza global de outliers está detalhada abaixo.", "",
+        "apenas no treino de cada dobra. A limpeza anterior usa somente regras fixas.", "",
         "Cada anúncio da parte de treino recebe uma previsão fora da amostra: o modelo "
         "que faz essa previsão foi ajustado nas outras dobras. As métricas agregadas são "
         "calculadas juntando essas previsões; a média por dobra é apresentada separadamente.", "",

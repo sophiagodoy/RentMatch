@@ -31,6 +31,7 @@ PROIBIDAS = ["aluguel", "total", "preco_por_metro"]
 MIN_FREQ = {"bairro": 15, "tipo": 30}
 
 # ---------------------------------------------------------------- limpeza
+CIDADE_ALVO = "campinas"
 OUTLIER_Z = 4.0          # z-score robusto do log(R$/m²) por tipo; maior que isso = descarta
 AREA_MIN, AREA_MAX = 8, 2000
 ALUGUEL_MIN, ALUGUEL_MAX = 300, 100_000

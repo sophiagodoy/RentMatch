@@ -26,7 +26,7 @@ def normalizar_texto(valor) -> str:
 
 
 def carregar_csv(caminho) -> pd.DataFrame:
-    df = pd.read_csv(caminho, encoding="utf-8-sig")
+    df = pd.read_csv(caminho, encoding="utf-8-sig", dtype={"id_anuncio": "string"})
     for col in COLUNAS_NUMERICAS:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -41,16 +41,36 @@ def _z_robusto(serie: pd.Series, referencia: pd.Series) -> pd.Series:
     return (serie - mediana) / mad
 
 
-def limpar(df: pd.DataFrame, outlier_z: float = cfg.OUTLIER_Z):
+def limpar(df: pd.DataFrame, outlier_z: float | None = None):
     """Retorna (df_limpo, relatorio). Cada descarte é contado para auditoria."""
     rel = {"linhas_lidas": int(len(df))}
-    df = df.copy()
+    obrigatorias = {"id_anuncio", cfg.ALVO, "area_m2"}
+    faltantes = obrigatorias - set(df.columns)
+    if faltantes:
+        raise ValueError(f"Colunas obrigatórias ausentes: {', '.join(sorted(faltantes))}.")
+    if outlier_z is not None and (not np.isfinite(outlier_z) or outlier_z <= 0):
+        raise ValueError("outlier_z deve ser positivo e finito.")
+    df = df.copy().reset_index(drop=True)
+    for col in COLUNAS_NUMERICAS:
+        if col in df:
+            df[col] = pd.to_numeric(df[col], errors="coerce").replace([np.inf, -np.inf], np.nan)
+    df["id_anuncio"] = df["id_anuncio"].astype("string").str.strip().replace("", pd.NA)
 
     if "atualizado_em" in df.columns:
-        df = df.sort_values("atualizado_em")
+        datas = pd.to_datetime(df["atualizado_em"], errors="coerce", utc=True, format="mixed")
+        df = df.assign(_data_ordem=datas).sort_values(
+            "_data_ordem", kind="stable", na_position="first").drop(columns="_data_ordem")
     antes = len(df)
-    df = df.drop_duplicates("id_anuncio", keep="last")
+    df = df[~(df["id_anuncio"].notna() & df.duplicated("id_anuncio", keep="last"))]
     rel["duplicados_removidos"] = int(antes - len(df))
+
+    # O coletor inclui cidades vizinhas; o escopo do projeto é Campinas.
+    antes = len(df)
+    if "endereco_completo" in df:
+        cidades = df["endereco_completo"].astype("string").str.extract(r"·\s*([^·]+)$", expand=False)
+        fora = cidades.notna() & cidades.map(normalizar_texto).ne(cfg.CIDADE_ALVO)
+        df = df[~fora]
+    rel["fora_da_cidade"] = int(antes - len(df))
 
     antes = len(df)
     df = df.dropna(subset=[cfg.ALVO, "area_m2"])
@@ -63,17 +83,24 @@ def limpar(df: pd.DataFrame, outlier_z: float = cfg.OUTLIER_Z):
     for col in ("quartos", "vagas", "taxas"):
         if col not in df.columns:
             df[col] = np.nan
-    df.loc[df["taxas"] < 0, "taxas"] = np.nan
+    rel["valores_invalidos_por_coluna"] = {}
+    for col in ("quartos", "vagas", "taxas"):
+        invalidos = df[col].notna() & (df[col] < 0)
+        if col != "taxas":
+            invalidos |= df[col].notna() & ((df[col] > 20) | (df[col] % 1 != 0))
+        rel["valores_invalidos_por_coluna"][col] = int(invalidos.sum())
+        df.loc[invalidos, col] = np.nan
 
-    # Outliers: R$/m² muito fora do padrão do tipo (erro de digitação no anúncio,
-    # imóvel comercial, aluguel por temporada etc.).
-    ppm_log = np.log(df[cfg.ALVO] / df["area_m2"])
-    z = pd.Series(0.0, index=df.index)
-    for _, idx in df.groupby("tipo").groups.items():
-        referencia = ppm_log.loc[idx] if len(idx) >= 20 else ppm_log
-        z.loc[idx] = _z_robusto(ppm_log.loc[idx], referencia)
+    # Filtro estatístico apenas para exploração explícita. O fluxo de treino
+    # preserva extremos válidos para não usar o alvo do teste na limpeza.
     antes = len(df)
-    df = df[z.abs() <= outlier_z]
+    if outlier_z is not None and not df.empty:
+        ppm_log = np.log(df[cfg.ALVO] / df["area_m2"])
+        z = pd.Series(0.0, index=df.index)
+        for _, idx in df.groupby("tipo").groups.items():
+            referencia = ppm_log.loc[idx] if len(idx) >= 20 else ppm_log
+            z.loc[idx] = _z_robusto(ppm_log.loc[idx], referencia)
+        df = df[z.abs() <= outlier_z]
     rel["outliers_removidos"] = int(antes - len(df))
 
     df = df.reset_index(drop=True)
@@ -88,23 +115,40 @@ def montar_grupos(df: pd.DataFrame) -> np.ndarray:
     idênticas do mesmo prédio) não ficam metade no treino e metade no teste,
     o que inflaria as métricas (RIA05).
     """
-    if "endereco_completo" in df.columns:
-        chave = (df["endereco_completo"].fillna("").astype(str) + "|"
-                 + df["area_m2"].astype(str) + "|" + df["quartos"].astype(str))
-    else:
-        chave = df["id_anuncio"].astype(str)
-    return pd.factorize(chave)[0]
+    chaves = []
+    for posicao, (_, linha) in enumerate(df.iterrows()):
+        endereco = normalizar_texto(linha.get("endereco_completo"))
+        if endereco != "desconhecido":
+            chave = ("endereco", endereco, float(linha["area_m2"]),
+                     None if pd.isna(linha["quartos"]) else float(linha["quartos"]))
+        elif pd.notna(linha.get("id_anuncio")) and str(linha["id_anuncio"]).strip():
+            chave = ("anuncio", str(linha["id_anuncio"]).strip())
+        else:
+            chave = ("linha", posicao)
+        chaves.append(chave)
+    return pd.factorize(pd.Series(chaves, dtype=object))[0]
 
 
 def separar_treino_teste(y: pd.Series, grupos, n_splits: int = cfg.N_FOLDS_CV,
                          semente: int = cfg.SEMENTE):
     """Holdout de teste (1/n_splits dos dados), estratificado por faixa de preço e por grupo."""
+    _validar_divisao(y, grupos, n_splits)
     return next(_divisor(n_splits, semente).split(np.zeros(len(y)), _faixas(y), grupos))
 
 
 def dobras_cv(y: pd.Series, grupos, n_splits: int = cfg.N_FOLDS_CV, semente: int = cfg.SEMENTE):
     """Lista de (treino, validação) para validação cruzada sem vazamento entre grupos."""
+    _validar_divisao(y, grupos, n_splits)
     return list(_divisor(n_splits, semente).split(np.zeros(len(y)), _faixas(y), grupos))
+
+
+def _validar_divisao(y, grupos, n_splits):
+    if n_splits < 2 or len(y) != len(grupos):
+        raise ValueError("Divisão requer ao menos duas dobras e um grupo por linha.")
+    if len(np.unique(grupos)) < n_splits:
+        raise ValueError("Não há grupos suficientes para a divisão solicitada.")
+    if not np.isfinite(np.asarray(y, float)).all():
+        raise ValueError("O alvo deve conter apenas números finitos.")
 
 
 def _divisor(n_splits, semente):
@@ -113,7 +157,7 @@ def _divisor(n_splits, semente):
 
 def _faixas(y: pd.Series):
     return pd.qcut(pd.Series(np.asarray(y)), q=min(10, max(2, len(y) // 30)),
-                   labels=False, duplicates="drop").to_numpy()
+                   labels=False, duplicates="drop").fillna(0).astype(int).to_numpy()
 
 
 class AgrupadorRaros(BaseEstimator, TransformerMixin):
@@ -161,7 +205,7 @@ def montar_entrada(dados: dict) -> pd.DataFrame:
                 except (TypeError, ValueError):
                     erros.append(f"'{chave}' deve ser um número")
                     return np.nan
-                if valor < minimo or (maximo is not None and valor > maximo):
+                if not np.isfinite(valor) or valor < minimo or (maximo is not None and valor > maximo):
                     erros.append(f"'{chave}' fora do intervalo permitido")
                 return valor
         if obrigatorio:
@@ -171,6 +215,9 @@ def montar_entrada(dados: dict) -> pd.DataFrame:
     area = numero("area_m2", "metragem", minimo=cfg.AREA_MIN, maximo=cfg.AREA_MAX)
     quartos = numero("quartos", maximo=20)
     vagas = numero("vagas", maximo=20)
+    for nome, valor in (("quartos", quartos), ("vagas", vagas)):
+        if np.isfinite(valor) and not valor.is_integer():
+            erros.append(f"'{nome}' deve ser um inteiro")
 
     if dados.get("taxas") not in (None, ""):
         taxas = numero("taxas", obrigatorio=False)

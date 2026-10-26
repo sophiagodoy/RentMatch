@@ -5,9 +5,10 @@ treina e compara modelos, e entrega para cada imóvel: **valor estimado**,
 **intervalo de incerteza**, **classificação** (Caro, Preço Justo ou
 Oportunidade) e os **fatores que mais pesaram**, em R$.
 
-> **Importante:** o código foi testado com dados **sintéticos** (inventados
-> por fórmula). Os números de desempenho reais só existem depois de rodar
-> `treinar.py` com o CSV de verdade do coletor.
+> **Importante:** a preparação e o treinamento foram verificados com o CSV
+> incluído nesta branch. Veja `REVISAO_DADOS.md` para resultados e limitações.
+> O arquivo `prever.py` está vazio nesta branch; os exemplos de integração abaixo
+> descrevem a interface planejada e ainda não podem ser executados.
 
 ## 1. Fluxo
 
@@ -36,20 +37,17 @@ formulário (bairro, tipo, m², quartos, vagas, taxas, valor anunciado)
 | `explicador.py` | Contribuição de cada característica em R$ (valores de Shapley exatos, sem depender da lib `shap`). |
 | `classificador.py` | Compara anunciado com estimado e classifica a oferta (RF07 e RF08). |
 | `prever.py` | Junta tudo: é o que o backend chama. Funciona como biblioteca, linha de comando ou JSON por stdin. |
-| `dados_sinteticos.py` | Gera CSV falso no formato do coletor, só para testar o pipeline. |
-| `test_modelo.py` | 15 testes automáticos offline. |
+| `test_preparo.py` | Testes da limpeza, agrupamento, entrada e campos ausentes. |
+| `test_validar.py` | Testes de integração da validação e isolamento do teste reservado. |
+| `test_treinar.py` | Teste de gravação e carregamento do modelo, preservando previsões e metadados. |
 
 ## 3. Como rodar
 
 ```bash
 pip install -r requirements.txt
 
-# a) testar o pipeline com dados FALSOS (não serve para conclusões)
-python dados_sinteticos.py --n 3000 --saida data/sintetico.csv
-python treinar.py --csv data/sintetico.csv
-
-# b) treinar com os dados reais do coletor
-python treinar.py                      # lê ../rentmatch_coletor/data/imoveis_campinas.csv
+# treinar com o CSV incluído no projeto (comandos dentro de modelo_ml)
+python treinar.py                      # lê data/imoveis_campinas.csv
 python treinar.py --ajustar            # busca de hiperparâmetros (mais demorado)
 python treinar.py --candidatos baseline ridge hgb   # só alguns modelos
 
@@ -58,7 +56,7 @@ python prever.py --bairro Cambuí --tipo apartamento --area 65 --quartos 2 \
                  --vagas 1 --condominio 450 --iptu 120 --anunciado 1800
 
 # testes
-python -m unittest test_modelo -v
+python -m unittest discover -p "test_*.py" -v
 ```
 
 O treino cria em `artefatos/`: `modelo_<versão>.joblib`, `metadados_<versão>.json`
@@ -80,13 +78,13 @@ Os relatórios ficam em `modelo_ml/validacao/`: `resultados_validacao.csv`,
 `metricas_por_dobra.csv`, `previsoes_validacao.csv`, `relatorio_validacao.json`
 e `analise_validacao.md`. Use `--csv` e `--saida` para mudar a entrada e a pasta.
 
-Esta execução não avalia o teste nem salva um modelo final. A análise documenta
-a limitação herdada da limpeza de outliers antes da divisão; os resultados são
-preliminares e precisam dessa revisão e do teste final para concluir sobre o uso.
+Esta execução não avalia o teste nem salva um modelo final. A limpeza usa regras
+fixas antes da divisão, preservando extremos válidos. Os resultados precisam do
+teste final e de um limite de erro acordado pelo grupo para concluir sobre o uso.
 
 ## 4. O que `treinar.py` faz
 
-1. **Limpa**: remove anúncios duplicados, valores fora de faixa e outliers (R$/m² muito fora do padrão do tipo). Cada descarte é contado no relatório.
+1. **Limpa**: remove anúncios duplicados, valores fora das faixas fixas e anúncios identificados como sendo de outras cidades. Cada descarte é contado no relatório.
 2. **Separa 20% para teste**, estratificado por faixa de preço e **agrupado**: anúncios do mesmo endereço, área e quartos ficam todos do mesmo lado. Sem isso, o mesmo imóvel anunciado duas vezes cairia no treino e no teste, e as métricas ficariam melhores do que a realidade.
 3. **Compara os candidatos** por validação cruzada só no treino.
 4. **Avalia o escolhido no teste**, no geral e por faixa de preço e por tipo, e diz quanto ele melhora em relação ao baseline.
@@ -94,6 +92,22 @@ preliminares e precisam dessa revisão e do teste final para concluir sobre o us
 6. **Re-treina com todos os dados** e salva, junto com versão, hash do CSV, versões das bibliotecas e métricas.
 
 ### Como ler as métricas
+
+A limpeza preserva IDs como texto, escolhe a atualização válida mais recente
+de cada ID e mantém registros sem ID separados. Valores numéricos inválidos são
+convertidos em ausentes; aluguel e área ausentes descartam a linha. Quartos e
+vagas devem ser inteiros entre 0 e 20, e taxas devem ser não negativas. Campos
+opcionais ausentes são tratados pelo pipeline, ajustado somente no treino.
+
+O município é identificado pelo sufixo `· Cidade` do endereço do coletor e
+comparado com `CIDADE_ALVO` em `config_modelo.py`. Endereços sem esse sufixo são
+mantidos para não inferir uma cidade sem evidência; precisam de revisão na coleta.
+Endereços são normalizados antes do agrupamento de imóveis entre as divisões.
+
+`limpar(df)` não remove outliers estatísticos: calcular esses limites na base
+inteira usaria os aluguéis do teste na preparação. `limpar(df, outlier_z=4)` fica
+disponível apenas para exploração, fora dos fluxos de treino e validação. Uma
+futura filtragem estatística deve ser ajustada somente no treino de cada dobra.
 
 | Métrica | O que significa |
 |---|---|
@@ -194,7 +208,7 @@ Quando valer a pena trocar: um **microserviço FastAPI** (carrega o modelo uma v
 
 ## 9. Limitações
 
-- Testado só com dados sintéticos. O desempenho real é desconhecido até treinar com o CSV do coletor.
+- O desempenho medido se refere ao CSV incluído; não demonstra qualidade em coletas futuras.
 - O explicador mostra o que pesou **na estimativa do modelo**, não uma causa no mundo real. "Bairro valorizado +R$ 60" significa que o bairro empurra a estimativa para cima em relação a um imóvel típico da base.
 - Com poucos imóveis em um tipo ou bairro, a estimativa é pouco confiável (o resultado avisa no caso de bairro).
 - O modelo não sabe de reformas, vista, estado de conservação nem fotos.
