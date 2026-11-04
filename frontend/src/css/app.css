@@ -241,6 +241,94 @@ button:focus-visible {
     margin: 5px 0 0;
 }
 
+/* ---------- Explicação dos fatores da estimativa ---------- */
+.fatores-estimativa {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.fatores-estimativa-titulo {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 14px;
+}
+
+.lista-fatores-estimativa {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.item-fator-estimativa {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.fator-texto strong,
+.fator-texto small {
+    display: block;
+}
+
+.fator-texto strong {
+    color: white;
+    font-size: 15px;
+}
+
+.fator-texto small {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 13px;
+}
+
+.fator-impacto {
+    flex: none;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.fator-aumenta {
+    color: #a8f0c2;
+}
+
+.fator-reduz {
+    color: #ffd1d1;
+}
+
+.fatores-estimativa-aviso {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 14px 0 0;
+}
+
+.botao-detalhes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: #0877ee;
+    background-color: #e5f1fe;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.botao-detalhes:hover {
+    color: white;
+    background-color: #0877ee;
+}
+
+.botao-detalhes:focus-visible {
+    outline: 3px solid #0877ee;
+    outline-offset: 3px;
+}
+
 /* ---------- Resumo (home) ---------- */
 .cartoes-resumo {
     display: grid;
@@ -643,5 +731,175 @@ a.botao-entrar {
 
     .cartao {
         padding: 25px;
+    }
+}
+
+/* ---------- Botão para abrir os detalhes ---------- */
+.botao-detalhes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #0877ee;
+    background-color: #e5f1fe;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.botao-detalhes:hover {
+    color: white;
+    background-color: #0877ee;
+}
+
+/* ---------- Janela de detalhes da avaliação ---------- */
+.modal-avaliacao {
+    width: min(560px, calc(100% - 32px));
+    max-height: min(85vh, 720px);
+    padding: 0;
+    color: #07164d;
+    background: white;
+    border: 0;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(7, 22, 77, 0.25);
+}
+
+.modal-avaliacao::backdrop {
+    background: rgba(7, 22, 77, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.modal-avaliacao-conteudo {
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.modal-avaliacao-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.modal-etiqueta {
+    margin: 0 0 6px;
+    color: #647895;
+    font-size: 14px;
+}
+
+.modal-avaliacao-cabecalho h2 {
+    margin: 0;
+    color: #0b397e;
+    font-size: 26px;
+}
+
+.modal-fechar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    color: #647895;
+    background: #f5faff;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.modal-fechar:hover {
+    color: #0b397e;
+    background: #e5f1fe;
+}
+
+.modal-resumo {
+    margin: 10px 0 22px;
+    color: #647895;
+}
+
+.modal-valores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.modal-valores > div {
+    display: grid;
+    gap: 7px;
+    padding: 14px;
+    background: #f5faff;
+    border-radius: 10px;
+}
+
+.modal-valores span {
+    color: #647895;
+    font-size: 13px;
+}
+
+.modal-valores strong {
+    color: #0b397e;
+    font-size: 16px;
+}
+
+.modal-fatores {
+    margin-top: 25px;
+}
+
+.modal-fatores h3 {
+    margin: 0 0 15px;
+    color: #0b397e;
+    font-size: 19px;
+}
+
+#modal-lista-fatores {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.modal-fator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e3ecf5;
+}
+
+.modal-fator-texto strong,
+.modal-fator-texto small {
+    display: block;
+}
+
+.modal-fator-texto small {
+    margin-top: 3px;
+    color: #647895;
+}
+
+.fator-positivo {
+    color: #1b7f4a;
+}
+
+.fator-negativo {
+    color: #b63232;
+}
+
+.modal-aviso {
+    margin: 16px 0 0;
+    color: #647895;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+    .modal-avaliacao-conteudo {
+        padding: 22px;
+    }
+
+    .modal-valores {
+        grid-template-columns: 1fr;
     }
 }

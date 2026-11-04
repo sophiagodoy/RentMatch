@@ -9,17 +9,16 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Icones do Bootstrap -->
+    <!-- Ícones do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <!-- CSS do projeto -->
     <link rel="stylesheet" href="../css/style.css">
-    <!-- CSS das telas internas (home e perfil) - carregar depois do style.css -->
     <link rel="stylesheet" href="../css/app.css">
 </head>
 
 <body>
-    <!-- Cabecalho -->
+    <!-- Cabeçalho -->
     <div class="cabecalho">
         <div class="cabecalho-conteudo">
             <a class="logo" href="home.html">
@@ -32,20 +31,22 @@
                 <a href="#avaliar">Avaliar</a>
                 <a href="#historico">Histórico</a>
                 <a href="about.html">Sobre</a>
-                <!-- BACKEND: trocar "Lucas" pelo primeiro nome do usuario logado -->
-                <a class="botao-cadastro" href="profile.html"><i class="bi bi-person-circle"></i>Lucas</a>
+                <!-- BACKEND: trocar "Lucas" pelo primeiro nome do usuário logado -->
+                <a class="botao-cadastro" href="profile.html">
+                    <i class="bi bi-person-circle"></i>Lucas
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- Conteudo principal -->
+    <!-- Conteúdo principal -->
     <div class="conteudo-principal conteudo-interno">
 
         <!-- Boas-vindas -->
         <section class="boas-vindas">
             <div class="boas-vindas-conteudo">
                 <div>
-                    <!-- BACKEND: nome do usuario logado -->
+                    <!-- BACKEND: nome do usuário logado -->
                     <p class="saudacao">Olá, Lucas!</p>
                     <h1>Esse aluguel está justo? Descubra em segundos.</h1>
                     <p class="descricao">
@@ -54,15 +55,18 @@
                     </p>
 
                     <div class="boas-vindas-botoes">
-                        <a class="botao-claro" href="#avaliar"><i class="bi bi-search"></i>Avaliar um imóvel</a>
+                        <a class="botao-claro" href="#avaliar">
+                            <i class="bi bi-search"></i>Avaliar um imóvel
+                        </a>
                         <a class="botao-contorno-claro" href="#historico">Ver histórico</a>
                     </div>
                 </div>
 
-                <!-- Exemplo fixo do que o RentMatch entrega -->
-                <div class="comparacao" role="img"
-                    aria-label="Exemplo: anunciado por R$ 1.800, estimado em R$ 1.650, classificado como Caro">
-                    <p class="comparacao-titulo">Exemplo de avaliação: apartamento de 2 quartos no Cambuí</p>
+                <!-- Exemplo fixo de resultado -->
+                <div class="comparacao" role="group" aria-label="Exemplo de comparação de valores">
+                    <p class="comparacao-titulo">
+                        Exemplo de avaliação: apartamento de 2 quartos no Cambuí
+                    </p>
 
                     <div class="barra-linha">
                         <span>Anunciado</span>
@@ -88,11 +92,11 @@
             </div>
         </section>
 
-        <!-- Resumo das avaliacoes -->
+        <!-- Resumo das avaliações -->
         <section>
             <h2 class="titulo-secao">Suas avaliações</h2>
 
-            <!-- BACKEND: preencher com os totais do usuario logado -->
+            <!-- BACKEND: preencher com os totais do usuário logado -->
             <div class="cartoes-resumo">
                 <div class="cartao-resumo">
                     <div class="icone-resumo"><i class="bi bi-clipboard-data"></i></div>
@@ -128,13 +132,13 @@
             </div>
         </section>
 
-        <!-- Nova avaliacao + como funciona -->
+        <!-- Nova avaliação + como funciona -->
         <div class="grade-home">
             <section class="cartao" id="avaliar">
                 <h2>Avalie seu aluguel</h2>
                 <p class="subtitulo">Informe os dados do imóvel para uma estimativa justa.</p>
 
-                <!-- BACKEND: enviar para a rota de avaliacao -->
+                <!-- BACKEND: enviar para a rota de avaliação -->
                 <form action="#" method="post">
                     <div class="grade-formulario">
                         <div class="grupo-formulario">
@@ -244,24 +248,25 @@
             </section>
         </div>
 
-        <!-- Avaliacoes recentes -->
+        <!-- Avaliações recentes -->
         <section class="cartao" id="historico">
             <div class="cabecalho-secao">
                 <h2>Avaliações recentes</h2>
-                <!-- BACKEND: link para a tela de historico completo -->
+                <!-- BACKEND: link para a tela de histórico completo -->
                 <a class="link-secao" href="#">Ver todas</a>
             </div>
 
-            <!-- BACKEND: gerar as linhas a partir das avaliacoes salvas do usuario -->
+            <!-- BACKEND: gerar as linhas a partir das avaliações salvas do usuário -->
             <div class="tabela-rolagem">
                 <table class="tabela">
                     <thead>
                         <tr>
-                            <th>Imóvel</th>
-                            <th>Anunciado</th>
-                            <th>Estimado</th>
-                            <th>Classificação</th>
-                            <th>Data</th>
+                            <th scope="col">Imóvel</th>
+                            <th scope="col">Anunciado</th>
+                            <th scope="col">Estimado</th>
+                            <th scope="col">Classificação</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Detalhes</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -271,33 +276,215 @@
                             <td>R$ 1.650</td>
                             <td><span class="selo selo-caro">Caro</span></td>
                             <td>04/10/2026</td>
+                            <td>
+                                <button class="botao-detalhes" type="button" data-avaliacao="1"
+                                    aria-label="Ver detalhes da avaliação do imóvel no Cambuí"
+                                    title="Ver detalhes">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </td>
                         </tr>
+
                         <tr>
                             <td><strong>Taquaral</strong><small>1 quarto, 38 m²</small></td>
                             <td>R$ 1.450</td>
                             <td>R$ 1.520</td>
                             <td><span class="selo selo-justo">Preço justo</span></td>
                             <td>02/10/2026</td>
+                            <td>
+                                <button class="botao-detalhes" type="button" data-avaliacao="2"
+                                    aria-label="Ver detalhes da avaliação do imóvel no Taquaral"
+                                    title="Ver detalhes">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </td>
                         </tr>
+
                         <tr>
                             <td><strong>Barão Geraldo</strong><small>3 quartos, 90 m²</small></td>
                             <td>R$ 2.900</td>
                             <td>R$ 3.400</td>
                             <td><span class="selo selo-oportunidade">Oportunidade</span></td>
                             <td>29/09/2026</td>
+                            <td>
+                                <button class="botao-detalhes" type="button" data-avaliacao="3"
+                                    aria-label="Ver detalhes da avaliação do imóvel em Barão Geraldo"
+                                    title="Ver detalhes">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </td>
                         </tr>
+
                         <tr>
                             <td><strong>Centro</strong><small>2 quartos, 58 m²</small></td>
                             <td>R$ 2.100</td>
                             <td>R$ 2.050</td>
                             <td><span class="selo selo-justo">Preço justo</span></td>
                             <td>25/09/2026</td>
+                            <td>
+                                <button class="botao-detalhes" type="button" data-avaliacao="4"
+                                    aria-label="Ver detalhes da avaliação do imóvel no Centro"
+                                    title="Ver detalhes">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
     </div>
+
+    <!-- Pop-up com os detalhes da avaliação selecionada -->
+    <dialog class="modal-avaliacao" id="modal-avaliacao"
+        aria-labelledby="modal-titulo" aria-describedby="modal-resumo">
+        <div class="modal-avaliacao-conteudo">
+            <div class="modal-avaliacao-cabecalho">
+                <div>
+                    <p class="modal-etiqueta">Detalhes da avaliação</p>
+                    <h2 id="modal-titulo">Imóvel</h2>
+                </div>
+
+                <button class="modal-fechar" type="button" aria-label="Fechar detalhes">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <p id="modal-resumo" class="modal-resumo"></p>
+
+            <div class="modal-valores">
+                <div>
+                    <span>Valor anunciado</span>
+                    <strong id="modal-anunciado"></strong>
+                </div>
+                <div>
+                    <span>Valor estimado</span>
+                    <strong id="modal-estimado"></strong>
+                </div>
+                <div>
+                    <span>Classificação</span>
+                    <strong id="modal-classificacao"></strong>
+                </div>
+            </div>
+
+            <section class="modal-fatores">
+                <h3>Fatores que influenciaram o valor</h3>
+                <ul id="modal-lista-fatores"></ul>
+                <p class="modal-aviso">
+                    Fatores e valores ilustrativos para demonstração; ainda não são calculados pelo modelo.
+                </p>
+            </section>
+        </div>
+    </dialog>
+
+    <script>
+        // Dados de demonstração. Depois, podem ser substituídos pelos dados retornados pelo backend.
+        const avaliacoes = {
+            1: {
+                imovel: "Cambuí",
+                resumo: "Apartamento · 2 quartos · 65 m²",
+                anunciado: "R$ 1.800",
+                estimado: "R$ 1.650",
+                classificacao: "Caro",
+                fatores: [
+                    ["Localização", "Bairro do imóvel", "+ R$ 180"],
+                    ["Área", "65 m²", "+ R$ 320"],
+                    ["Taxas informadas", "Condomínio e IPTU", "− R$ 70"]
+                ]
+            },
+            2: {
+                imovel: "Taquaral",
+                resumo: "Apartamento · 1 quarto · 38 m²",
+                anunciado: "R$ 1.450",
+                estimado: "R$ 1.520",
+                classificacao: "Preço justo",
+                fatores: [
+                    ["Localização", "Bairro do imóvel", "+ R$ 120"],
+                    ["Área", "38 m²", "− R$ 90"],
+                    ["Quartos", "1 quarto", "− R$ 60"]
+                ]
+            },
+            3: {
+                imovel: "Barão Geraldo",
+                resumo: "Casa · 3 quartos · 90 m²",
+                anunciado: "R$ 2.900",
+                estimado: "R$ 3.400",
+                classificacao: "Oportunidade",
+                fatores: [
+                    ["Área", "90 m²", "+ R$ 420"],
+                    ["Quartos", "3 quartos", "+ R$ 280"],
+                    ["Localização", "Bairro do imóvel", "− R$ 150"]
+                ]
+            },
+            4: {
+                imovel: "Centro",
+                resumo: "Apartamento · 2 quartos · 58 m²",
+                anunciado: "R$ 2.100",
+                estimado: "R$ 2.050",
+                classificacao: "Preço justo",
+                fatores: [
+                    ["Localização", "Bairro do imóvel", "+ R$ 100"],
+                    ["Área", "58 m²", "+ R$ 160"],
+                    ["Taxas informadas", "Condomínio e IPTU", "− R$ 90"]
+                ]
+            }
+        };
+
+        const modal = document.querySelector("#modal-avaliacao");
+
+        document.querySelectorAll(".botao-detalhes").forEach((botao) => {
+            botao.addEventListener("click", () => {
+                const avaliacao = avaliacoes[botao.dataset.avaliacao];
+                if (!avaliacao) return;
+
+                document.querySelector("#modal-titulo").textContent = avaliacao.imovel;
+                document.querySelector("#modal-resumo").textContent = avaliacao.resumo;
+                document.querySelector("#modal-anunciado").textContent = avaliacao.anunciado;
+                document.querySelector("#modal-estimado").textContent = avaliacao.estimado;
+                document.querySelector("#modal-classificacao").textContent = avaliacao.classificacao;
+
+                const lista = document.querySelector("#modal-lista-fatores");
+                lista.replaceChildren();
+
+                avaliacao.fatores.forEach(([nome, descricao, impacto]) => {
+                    const item = document.createElement("li");
+                    item.className = "modal-fator";
+
+                    const texto = document.createElement("span");
+                    texto.className = "modal-fator-texto";
+
+                    const titulo = document.createElement("strong");
+                    titulo.textContent = nome;
+
+                    const detalhe = document.createElement("small");
+                    detalhe.textContent = descricao;
+
+                    const valor = document.createElement("strong");
+                    valor.className = impacto.startsWith("+")
+                        ? "fator-positivo"
+                        : "fator-negativo";
+                    valor.textContent = impacto;
+
+                    texto.append(titulo, detalhe);
+                    item.append(texto, valor);
+                    lista.append(item);
+                });
+
+                modal.showModal();
+            });
+        });
+
+        document.querySelector(".modal-fechar").addEventListener("click", () => {
+            modal.close();
+        });
+
+        // Fecha ao clicar na área escura ao redor da caixa.
+        modal.addEventListener("click", (evento) => {
+            if (evento.target === modal) {
+                modal.close();
+            }
+        });
+    </script>
 </body>
 
 </html>
