@@ -59,6 +59,7 @@ export type EvaluationMinAggregateOutputType = {
   iptu: runtime.Decimal | null
   valorEstimado: runtime.Decimal | null
   classificacao: string | null
+  saved: boolean | null
   createdAt: Date | null
 }
 
@@ -75,6 +76,7 @@ export type EvaluationMaxAggregateOutputType = {
   iptu: runtime.Decimal | null
   valorEstimado: runtime.Decimal | null
   classificacao: string | null
+  saved: boolean | null
   createdAt: Date | null
 }
 
@@ -92,6 +94,8 @@ export type EvaluationCountAggregateOutputType = {
   valorEstimado: number
   classificacao: number
   fatores: number
+  modelo: number
+  saved: number
   createdAt: number
   _all: number
 }
@@ -130,6 +134,7 @@ export type EvaluationMinAggregateInputType = {
   iptu?: true
   valorEstimado?: true
   classificacao?: true
+  saved?: true
   createdAt?: true
 }
 
@@ -146,6 +151,7 @@ export type EvaluationMaxAggregateInputType = {
   iptu?: true
   valorEstimado?: true
   classificacao?: true
+  saved?: true
   createdAt?: true
 }
 
@@ -163,6 +169,8 @@ export type EvaluationCountAggregateInputType = {
   valorEstimado?: true
   classificacao?: true
   fatores?: true
+  modelo?: true
+  saved?: true
   createdAt?: true
   _all?: true
 }
@@ -267,6 +275,8 @@ export type EvaluationGroupByOutputType = {
   valorEstimado: runtime.Decimal
   classificacao: string
   fatores: runtime.JsonValue
+  modelo: runtime.JsonValue | null
+  saved: boolean
   createdAt: Date
   _count: EvaluationCountAggregateOutputType | null
   _avg: EvaluationAvgAggregateOutputType | null
@@ -307,6 +317,8 @@ export type EvaluationWhereInput = {
   valorEstimado?: Prisma.DecimalFilter<"Evaluation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFilter<"Evaluation"> | string
   fatores?: Prisma.JsonFilter<"Evaluation">
+  modelo?: Prisma.JsonNullableFilter<"Evaluation">
+  saved?: Prisma.BoolFilter<"Evaluation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -325,6 +337,8 @@ export type EvaluationOrderByWithRelationInput = {
   valorEstimado?: Prisma.SortOrder
   classificacao?: Prisma.SortOrder
   fatores?: Prisma.SortOrder
+  modelo?: Prisma.SortOrderInput | Prisma.SortOrder
+  saved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -346,6 +360,8 @@ export type EvaluationWhereUniqueInput = Prisma.AtLeast<{
   valorEstimado?: Prisma.DecimalFilter<"Evaluation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFilter<"Evaluation"> | string
   fatores?: Prisma.JsonFilter<"Evaluation">
+  modelo?: Prisma.JsonNullableFilter<"Evaluation">
+  saved?: Prisma.BoolFilter<"Evaluation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -364,6 +380,8 @@ export type EvaluationOrderByWithAggregationInput = {
   valorEstimado?: Prisma.SortOrder
   classificacao?: Prisma.SortOrder
   fatores?: Prisma.SortOrder
+  modelo?: Prisma.SortOrderInput | Prisma.SortOrder
+  saved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.EvaluationCountOrderByAggregateInput
   _avg?: Prisma.EvaluationAvgOrderByAggregateInput
@@ -389,6 +407,8 @@ export type EvaluationScalarWhereWithAggregatesInput = {
   valorEstimado?: Prisma.DecimalWithAggregatesFilter<"Evaluation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringWithAggregatesFilter<"Evaluation"> | string
   fatores?: Prisma.JsonWithAggregatesFilter<"Evaluation">
+  modelo?: Prisma.JsonNullableWithAggregatesFilter<"Evaluation">
+  saved?: Prisma.BoolWithAggregatesFilter<"Evaluation"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Evaluation"> | Date | string
 }
 
@@ -405,6 +425,8 @@ export type EvaluationCreateInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutEvaluationsInput
 }
@@ -423,6 +445,8 @@ export type EvaluationUncheckedCreateInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
 }
 
@@ -439,6 +463,8 @@ export type EvaluationUpdateInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutEvaluationsNestedInput
 }
@@ -457,6 +483,8 @@ export type EvaluationUncheckedUpdateInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -474,6 +502,8 @@ export type EvaluationCreateManyInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
 }
 
@@ -490,6 +520,8 @@ export type EvaluationUpdateManyMutationInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -507,6 +539,8 @@ export type EvaluationUncheckedUpdateManyInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -534,6 +568,8 @@ export type EvaluationCountOrderByAggregateInput = {
   valorEstimado?: Prisma.SortOrder
   classificacao?: Prisma.SortOrder
   fatores?: Prisma.SortOrder
+  modelo?: Prisma.SortOrder
+  saved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -560,6 +596,7 @@ export type EvaluationMaxOrderByAggregateInput = {
   iptu?: Prisma.SortOrder
   valorEstimado?: Prisma.SortOrder
   classificacao?: Prisma.SortOrder
+  saved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -576,6 +613,7 @@ export type EvaluationMinOrderByAggregateInput = {
   iptu?: Prisma.SortOrder
   valorEstimado?: Prisma.SortOrder
   classificacao?: Prisma.SortOrder
+  saved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -663,6 +701,10 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type EvaluationCreateWithoutUserInput = {
   id?: string
   bairro: string
@@ -676,6 +718,8 @@ export type EvaluationCreateWithoutUserInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
 }
 
@@ -692,6 +736,8 @@ export type EvaluationUncheckedCreateWithoutUserInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
 }
 
@@ -738,6 +784,8 @@ export type EvaluationScalarWhereInput = {
   valorEstimado?: Prisma.DecimalFilter<"Evaluation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFilter<"Evaluation"> | string
   fatores?: Prisma.JsonFilter<"Evaluation">
+  modelo?: Prisma.JsonNullableFilter<"Evaluation">
+  saved?: Prisma.BoolFilter<"Evaluation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
 }
 
@@ -754,6 +802,8 @@ export type EvaluationCreateManyUserInput = {
   valorEstimado: runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao: string
   fatores: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: boolean
   createdAt?: Date | string
 }
 
@@ -770,6 +820,8 @@ export type EvaluationUpdateWithoutUserInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -786,6 +838,8 @@ export type EvaluationUncheckedUpdateWithoutUserInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -802,6 +856,8 @@ export type EvaluationUncheckedUpdateManyWithoutUserInput = {
   valorEstimado?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   classificacao?: Prisma.StringFieldUpdateOperationsInput | string
   fatores?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  modelo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  saved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -821,6 +877,8 @@ export type EvaluationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   valorEstimado?: boolean
   classificacao?: boolean
   fatores?: boolean
+  modelo?: boolean
+  saved?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["evaluation"]>
@@ -839,6 +897,8 @@ export type EvaluationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   valorEstimado?: boolean
   classificacao?: boolean
   fatores?: boolean
+  modelo?: boolean
+  saved?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["evaluation"]>
@@ -857,6 +917,8 @@ export type EvaluationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   valorEstimado?: boolean
   classificacao?: boolean
   fatores?: boolean
+  modelo?: boolean
+  saved?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["evaluation"]>
@@ -875,10 +937,12 @@ export type EvaluationSelectScalar = {
   valorEstimado?: boolean
   classificacao?: boolean
   fatores?: boolean
+  modelo?: boolean
+  saved?: boolean
   createdAt?: boolean
 }
 
-export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "bairro" | "tipo" | "areaM2" | "quartos" | "vagas" | "valorAnunciado" | "condominio" | "iptu" | "valorEstimado" | "classificacao" | "fatores" | "createdAt", ExtArgs["result"]["evaluation"]>
+export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "bairro" | "tipo" | "areaM2" | "quartos" | "vagas" | "valorAnunciado" | "condominio" | "iptu" | "valorEstimado" | "classificacao" | "fatores" | "modelo" | "saved" | "createdAt", ExtArgs["result"]["evaluation"]>
 export type EvaluationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -908,6 +972,8 @@ export type $EvaluationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     valorEstimado: runtime.Decimal
     classificacao: string
     fatores: runtime.JsonValue
+    modelo: runtime.JsonValue | null
+    saved: boolean
     createdAt: Date
   }, ExtArgs["result"]["evaluation"]>
   composites: {}
@@ -1346,6 +1412,8 @@ export interface EvaluationFieldRefs {
   readonly valorEstimado: Prisma.FieldRef<"Evaluation", 'Decimal'>
   readonly classificacao: Prisma.FieldRef<"Evaluation", 'String'>
   readonly fatores: Prisma.FieldRef<"Evaluation", 'Json'>
+  readonly modelo: Prisma.FieldRef<"Evaluation", 'Json'>
+  readonly saved: Prisma.FieldRef<"Evaluation", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Evaluation", 'DateTime'>
 }
     

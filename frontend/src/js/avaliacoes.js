@@ -1,7 +1,11 @@
 // Componentes compartilhados pela home e pelo histórico completo.
-function criarHistoricoAvaliacoes({ aoExcluir }) {
+function criarHistoricoAvaliacoes({ aoExcluir, aoSalvar = async () => {} }) {
     const tabela = document.querySelector("#lista-avaliacoes");
     const modal = document.querySelector("#modal-avaliacao");
+    const salvar = document.querySelector("#modal-salvar");
+    const mensagemModal = document.querySelector("#modal-mensagem");
+    let avaliacaoAberta = null;
+    let salvando = false;
 
     if (!sessaoRentMatch.autenticado()) {
         return { autenticado: false };
@@ -97,7 +101,7 @@ function criarHistoricoAvaliacoes({ aoExcluir }) {
             botao.title = "Ver detalhes";
             botao.setAttribute("aria-label", `Ver detalhes da avaliação em ${avaliacao.bairro}`);
             botao.innerHTML = '<i class="bi bi-eye" aria-hidden="true"></i>';
-            botao.addEventListener("click", () => abrirDetalhes(avaliacao));
+            botao.addEventListener("click", () => carregarDetalhes(avaliacao.id, botao));
 
             const excluir = document.createElement("button");
             excluir.className = "botao-excluir";
@@ -134,12 +138,37 @@ function criarHistoricoAvaliacoes({ aoExcluir }) {
         }
     }
 
+    async function carregarDetalhes(id, botao) {
+        if (botao.disabled) return;
+        botao.disabled = true;
+        botao.setAttribute("aria-busy", "true");
+        try {
+            const resposta = await sessaoRentMatch.requisitar(`/evaluations/${encodeURIComponent(id)}`);
+            const avaliacao = await sessaoRentMatch.lerDados(
+                resposta, "Não foi possível carregar os detalhes da avaliação. Tente novamente."
+            );
+            abrirDetalhes(avaliacao);
+        } catch (erro) {
+            if (!erro.sessaoExpirada) window.alert(erro.message);
+        } finally {
+            botao.disabled = false;
+            botao.setAttribute("aria-busy", "false");
+        }
+    }
+
     function abrirDetalhes(avaliacao) {
+        avaliacaoAberta = avaliacao;
+        if (salvar) {
+            salvar.hidden = avaliacao.saved;
+            salvar.disabled = salvando;
+            salvar.textContent = "Salvar no histórico";
+        }
+        if (mensagemModal) mensagemModal.textContent = "";
         document.querySelector("#modal-titulo").textContent = avaliacao.bairro;
         document.querySelector("#modal-resumo").textContent =
             `${avaliacao.tipo} · ${avaliacao.quartos} quartos · ${avaliacao.vagas} vagas · ${avaliacao.areaM2} m²`;
         document.querySelector("#modal-data").textContent =
-            `Avaliação salva em ${new Date(avaliacao.createdAt).toLocaleString("pt-BR")}`;
+            `Avaliação realizada em ${new Date(avaliacao.createdAt).toLocaleString("pt-BR")}`;
         document.querySelector("#modal-anunciado").textContent = formatarMoeda(avaliacao.valorAnunciado);
         document.querySelector("#modal-estimado").textContent = formatarMoeda(avaliacao.valorEstimado);
         const classificacao = document.querySelector("#modal-classificacao");
@@ -152,6 +181,17 @@ function criarHistoricoAvaliacoes({ aoExcluir }) {
         document.querySelector("#modal-diferenca").textContent = diferenca === 0
             ? "O valor anunciado é igual ao estimado."
             : `${formatarMoeda(Math.abs(diferenca))} ${diferenca > 0 ? "acima" : "abaixo"} do valor estimado.`;
+
+        const informacoes = document.querySelector("#modal-modelo");
+        if (informacoes) {
+            const modelo = avaliacao.modelo;
+            const faixa = Array.isArray(modelo?.intervaloEstimado)
+                ? `Faixa estimada: ${formatarMoeda(modelo.intervaloEstimado[0])} a ${formatarMoeda(modelo.intervaloEstimado[1])}. `
+                : "";
+            const avisos = Array.isArray(modelo?.avisos) ? modelo.avisos.filter((aviso) => typeof aviso === "string").join(" ") : "";
+            informacoes.hidden = !modelo;
+            informacoes.textContent = `${faixa}Estimativa baseada em anúncios de imóveis; os valores podem variar. ${avisos}`;
+        }
 
         const lista = document.querySelector("#modal-lista-fatores");
         lista.replaceChildren();
@@ -184,10 +224,41 @@ function criarHistoricoAvaliacoes({ aoExcluir }) {
         modal.showModal();
     }
 
+    salvar?.addEventListener("click", async () => {
+        if (!avaliacaoAberta || avaliacaoAberta.saved || salvando) return;
+        const avaliacao = avaliacaoAberta;
+        salvando = true;
+        salvar.disabled = true;
+        salvar.textContent = "Salvando...";
+        mensagemModal.textContent = "Salvando sua avaliação...";
+        try {
+            const resposta = await sessaoRentMatch.requisitar(`/evaluations/${encodeURIComponent(avaliacao.id)}/save`, {
+                method: "PATCH"
+            });
+            const atualizada = await sessaoRentMatch.lerDados(resposta, "Não foi possível salvar a avaliação. Tente novamente.");
+            Object.assign(avaliacao, atualizada);
+            if (avaliacaoAberta === avaliacao) {
+                salvar.hidden = true;
+                mensagemModal.textContent = "Avaliação salva no seu histórico.";
+            }
+            await aoSalvar();
+        } catch (erro) {
+            if (!erro.sessaoExpirada && avaliacaoAberta === avaliacao) {
+                mensagemModal.textContent = erro instanceof TypeError
+                    ? "Não foi possível conectar ao servidor. Tente salvar novamente."
+                    : erro.message;
+            }
+        } finally {
+            salvando = false;
+            salvar.disabled = false;
+            salvar.textContent = "Salvar no histórico";
+        }
+    });
+
     document.querySelector(".modal-fechar").addEventListener("click", () => modal.close());
     modal.addEventListener("click", (evento) => {
         if (evento.target === modal) modal.close();
     });
 
-    return { autenticado: true, buscar, mostrarMensagem, atualizarResumo, renderizar };
+    return { autenticado: true, buscar, mostrarMensagem, atualizarResumo, renderizar, abrirDetalhes };
 }

@@ -38,6 +38,8 @@ model Evaluation {
   valorEstimado    Decimal  @db.Decimal(12, 2)
   classificacao    String
   fatores          Json
+  modelo           Json?
+  saved            Boolean  @default(false)
   createdAt        DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

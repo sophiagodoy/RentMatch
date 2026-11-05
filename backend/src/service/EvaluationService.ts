@@ -1,8 +1,30 @@
 import type { EvaluationRepository } from "../repository/EvaluationRepository.js";
 import { AppError } from "../utils/AppError.js";
+import type { EvaluationCreateDTO } from "../models/Evaluation.js";
+import { PythonEvaluationPredictor, type EvaluationPredictor } from "./EvaluationPredictor.js";
 
 export class EvaluationService {
-    constructor(private readonly evaluationRepository: EvaluationRepository) {}
+    constructor(
+        private readonly evaluationRepository: EvaluationRepository,
+        private readonly predictor: EvaluationPredictor = new PythonEvaluationPredictor()
+    ) {}
+
+    async create(userId: string, data: EvaluationCreateDTO) {
+        const result = await this.predictor.predict(data);
+        return this.evaluationRepository.create(userId, data, result);
+    }
+
+    async getById(userId: string, evaluationId: string) {
+        const evaluation = await this.evaluationRepository.findOwned(evaluationId, userId);
+        if (!evaluation) throw new AppError("Avaliação não encontrada", 404);
+        return evaluation;
+    }
+
+    async save(userId: string, evaluationId: string) {
+        const evaluation = await this.evaluationRepository.saveOwned(evaluationId, userId);
+        if (!evaluation) throw new AppError("Avaliação não encontrada", 404);
+        return evaluation;
+    }
 
     async list(userId: string, page = 1, limit?: number) {
         const result = await this.evaluationRepository.findHistory(userId, page, limit);

@@ -139,13 +139,12 @@
                 <h2>Avalie seu aluguel</h2>
                 <p class="subtitulo">Informe os dados do imóvel para uma estimativa justa.</p>
 
-                <!-- BACKEND: enviar para a rota de avaliação -->
-                <form action="#" method="post">
+                <form id="form-avaliacao">
                     <div class="grade-formulario">
                         <div class="grupo-formulario">
                             <label for="bairro">Bairro ou região</label>
                             <div class="campo-formulario">
-                                <select id="bairro" name="bairro">
+                                <select id="bairro" name="bairro" required>
                                     <option value="" selected disabled>Selecione</option>
                                     <option>Barão Geraldo</option>
                                     <option>Bosque</option>
@@ -162,7 +161,7 @@
                         <div class="grupo-formulario">
                             <label for="tipo">Tipo do imóvel</label>
                             <div class="campo-formulario">
-                                <select id="tipo" name="tipo">
+                                <select id="tipo" name="tipo" required>
                                     <option value="" selected disabled>Selecione</option>
                                     <option>Apartamento</option>
                                     <option>Casa</option>
@@ -174,21 +173,21 @@
                         <div class="grupo-formulario">
                             <label for="metragem">Metragem (m²)</label>
                             <div class="campo-formulario">
-                                <input type="number" id="metragem" name="metragem" min="0" placeholder="Ex.: 65">
+                                <input type="number" id="metragem" name="metragem" min="8" max="2000" step="0.01" required placeholder="Ex.: 65">
                             </div>
                         </div>
 
                         <div class="grupo-formulario">
                             <label for="quartos">Quartos</label>
                             <div class="campo-formulario">
-                                <input type="number" id="quartos" name="quartos" min="0" placeholder="Ex.: 2">
+                                <input type="number" id="quartos" name="quartos" min="0" max="20" step="1" required placeholder="Ex.: 2">
                             </div>
                         </div>
 
                         <div class="grupo-formulario">
                             <label for="vagas">Vagas</label>
                             <div class="campo-formulario">
-                                <input type="number" id="vagas" name="vagas" min="0" placeholder="Ex.: 1">
+                                <input type="number" id="vagas" name="vagas" min="0" max="20" step="1" required placeholder="Ex.: 1">
                             </div>
                         </div>
 
@@ -196,7 +195,7 @@
                             <label for="valor-anunciado">Valor anunciado</label>
                             <div class="campo-formulario">
                                 <span class="prefixo">R$</span>
-                                <input type="number" id="valor-anunciado" name="valor-anunciado" min="0"
+                                <input type="number" id="valor-anunciado" name="valor-anunciado" min="0.01" max="100000" step="0.01" required
                                     placeholder="Ex.: 1800">
                             </div>
                         </div>
@@ -205,7 +204,7 @@
                             <label for="condominio">Condomínio</label>
                             <div class="campo-formulario">
                                 <span class="prefixo">R$</span>
-                                <input type="number" id="condominio" name="condominio" min="0" placeholder="Ex.: 450">
+                                <input type="number" id="condominio" name="condominio" min="0" max="100000" step="0.01" placeholder="Ex.: 450">
                             </div>
                         </div>
 
@@ -213,12 +212,14 @@
                             <label for="iptu">IPTU</label>
                             <div class="campo-formulario">
                                 <span class="prefixo">R$</span>
-                                <input type="number" id="iptu" name="iptu" min="0" placeholder="Ex.: 120">
+                                <input type="number" id="iptu" name="iptu" min="0" max="100000" step="0.01" placeholder="Ex.: 120">
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="botao-entrar">Avaliar imóvel</button>
+                    <button type="submit" class="botao-entrar" id="criar-avaliacao">Avaliar imóvel</button>
+                    <p class="mensagem-formulario" id="mensagem-avaliacao" role="status"></p>
+                    <button type="button" class="link-secao botao-link-secao" id="ver-resultado" hidden>Reabrir último resultado</button>
                 </form>
             </section>
 
@@ -309,6 +310,7 @@
             </div>
 
             <p id="modal-diferenca" class="modal-diferenca"></p>
+            <p id="modal-modelo" class="modal-aviso" hidden></p>
             <dl class="modal-taxas">
                 <div>
                     <dt>Condomínio informado</dt>
@@ -325,6 +327,11 @@
                 <ul id="modal-lista-fatores"></ul>
                 <p class="modal-aviso" id="modal-aviso"></p>
             </section>
+            <div class="modal-acoes">
+                <button type="button" class="botao-entrar" id="modal-salvar" hidden>Salvar no histórico</button>
+                <a class="link-secao" href="historico.html">Ver histórico completo</a>
+            </div>
+            <p class="mensagem-formulario" id="modal-mensagem" role="status"></p>
         </div>
     </dialog>
 

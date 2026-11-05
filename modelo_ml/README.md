@@ -7,8 +7,8 @@ Oportunidade) e os **fatores que mais pesaram**, em R$.
 
 > **Importante:** a preparação e o treinamento foram verificados com o CSV
 > incluído nesta branch. Veja `REVISAO_DADOS.md` para resultados e limitações.
-> O arquivo `prever.py` está vazio nesta branch; os exemplos de integração abaixo
-> descrevem a interface planejada e ainda não podem ser executados.
+> `prever.py` executa a previsão com o artefato gerado pelo treinamento.
+> O formulário usa `POST /evaluations`; o resultado só entra no histórico após salvar.
 
 ## 1. Fluxo
 
@@ -40,6 +40,7 @@ formulário (bairro, tipo, m², quartos, vagas, taxas, valor anunciado)
 | `test_preparo.py` | Testes da limpeza, agrupamento, entrada e campos ausentes. |
 | `test_validar.py` | Testes de integração da validação e isolamento do teste reservado. |
 | `test_treinar.py` | Teste de gravação e carregamento do modelo, preservando previsões e metadados. |
+| `test_prever.py` | Contrato JSON da previsão, classificação, fatores, avisos e falhas de entrada ou artefato. |
 
 ## 3. Como rodar
 
@@ -152,14 +153,14 @@ métricas ficam lindas e falsas. Por isso só entram `bairro`, `tipo`,
 
 ## 7. Integração com o backend
 
-O `prever.py --json` recebe e devolve JSON, então o backend em Node pode chamá-lo sem Python rodando como serviço:
+O `prever.py --json` recebe e devolve JSON, então o backend em Node pode chamá-lo sem Python rodando como serviço. A integração está em `backend/src/service/EvaluationPredictor.ts`, com limite de 30 segundos por chamada. Exemplo executado a partir da raiz do projeto:
 
 ```js
 import { spawn } from "node:child_process";
 
 function avaliar(dados, valorAnunciado) {
   return new Promise((resolve, reject) => {
-    const py = spawn("python", ["prever.py", "--json"], { cwd: "rentmatch_modelo" });
+    const py = spawn("python", ["-X", "utf8", "prever.py", "--json"], { cwd: "modelo_ml" });
     let saida = "";
     py.stdout.on("data", (d) => (saida += d));
     py.on("close", (codigo) => {

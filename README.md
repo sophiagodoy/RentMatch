@@ -48,9 +48,43 @@ O desenvolvimento seguiu a metodologia **SCRUM**, organizada em sprints com entr
 
 Com o backend configurado e rodando na porta 3000, acesse **http://localhost:3000/** para abrir o login. O backend também serve os arquivos do frontend.
 
-```bash
+Com o Docker Desktop aberto e o `backend/.env` configurado:
 
+```powershell
+python -m pip install -r modelo_ml/requirements.txt
+python modelo_ml/treinar.py
+cd backend
+npm.cmd install --include=dev
+npx.cmd prisma generate --config prisma7.config.ts
+npm.cmd run docker
+npx.cmd prisma migrate deploy --config prisma7.config.ts
+npm.cmd run dev
 ```
+
+O treinamento é necessário na primeira execução ou quando a base de imóveis mudar. Os artefatos ficam em `modelo_ml/artefatos/` e não são versionados. O backend usa o Python da `.venv` da raiz, quando existe, ou o Python instalado no sistema. Para escolher outro executável, configure `PYTHON_EXECUTABLE` no `backend/.env`.
+
+Para testar no navegador, faça login, preencha **Avalie seu aluguel** e clique em **Avaliar imóvel**. O resultado mostra a estimativa, a classificação, a faixa estimada e os fatores. Clique em **Salvar no histórico** para incluir a avaliação no histórico e nos totais. O link **Reabrir último resultado** permite retornar ao resultado enquanto a página continua aberta.
+
+## Consulta e salvamento de avaliações
+
+As rotas abaixo exigem `Authorization: Bearer <token>` e acessam somente avaliações do usuário autenticado.
+
+| Rota | Comportamento |
+| --- | --- |
+| `POST /evaluations` | Valida o formulário, calcula com o modelo Python e cria uma avaliação com `saved: false`. Responde `201` com o resultado persistido. |
+| `GET /evaluations/:id` | Retorna os dados do imóvel, valores, classificação, fatores, data e `saved`, inclusive quando a avaliação ainda não foi salva. |
+| `PATCH /evaluations/:id/save` | Define `saved: true` e retorna a avaliação atualizada. Não exige corpo e pode ser repetida sem duplicar a avaliação. |
+| `GET /evaluations` | Lista somente as avaliações salvas e retorna paginação e totais dessas avaliações. |
+
+Os detalhes e o salvamento respondem `200` com o objeto da avaliação; ID inválido retorna `400`, autenticação ausente ou inválida retorna `401` e avaliação inexistente ou de outra conta retorna `404`.
+
+O `POST` recebe `bairro`, `tipo` (`Apartamento`, `Casa` ou `Kitnet`), `areaM2` (8 a 2000), `quartos` e `vagas` (inteiros de 0 a 20), `valorAnunciado` e, opcionalmente, `condominio` e `iptu`. Valores monetários aceitam até duas casas decimais. A identidade do dono vem do token; estimativa, classificação, fatores e estado de salvamento vêm do servidor.
+
+O botão de detalhes na home e no histórico consulta `GET /evaluations/:id`. Os fatores e os metadados do modelo (`modelo`) são os registrados na avaliação. A migração `20261105160000_add_evaluation_model_result` preserva a versão, a faixa estimada e os avisos. Se o Python ou o artefato do modelo estiver indisponível, a criação retorna `503` sem gravar um resultado fictício.
+
+A migração `20261105150000_add_evaluation_saved` mantém os registros anteriores como salvos. Novas avaliações começam com `saved: false` e entram no histórico após o `PATCH`.
+
+Com o modelo treinado, o banco rodando e as migrações aplicadas, execute `npm.cmd run test:evaluations` dentro de `backend`. Os testes criam duas contas temporárias e removem seus dados ao terminar. Para verificar o modelo, execute `python -m unittest discover -s modelo_ml -p "test_*.py" -v` na raiz.
 
 ## Integrantes do grupo
 

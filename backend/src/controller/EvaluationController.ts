@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import type { EvaluationService } from "../service/EvaluationService.js";
+import { EvaluationCreateSchema } from "../models/Evaluation.js";
 
 const EvaluationIdSchema = z.uuid();
 const EvaluationHistoryQuerySchema = z.object({
@@ -10,6 +11,24 @@ const EvaluationHistoryQuerySchema = z.object({
 
 export class EvaluationController {
     constructor(private readonly evaluationService: EvaluationService) {}
+
+    async create(req: Request, res: Response) {
+        const data = EvaluationCreateSchema.parse(req.body);
+        const evaluation = await this.evaluationService.create(res.locals.userId, data);
+        return res.status(201).json(evaluation);
+    }
+
+    async getById(req: Request, res: Response) {
+        const evaluationId = EvaluationIdSchema.parse(req.params.id);
+        const evaluation = await this.evaluationService.getById(res.locals.userId, evaluationId);
+        return res.status(200).json(evaluation);
+    }
+
+    async save(req: Request, res: Response) {
+        const evaluationId = EvaluationIdSchema.parse(req.params.id);
+        const evaluation = await this.evaluationService.save(res.locals.userId, evaluationId);
+        return res.status(200).json(evaluation);
+    }
 
     async list(req: Request, res: Response) {
         const query = EvaluationHistoryQuerySchema.parse(req.query);

@@ -844,6 +844,31 @@ a.botao-entrar {
     background: #e5f1fe;
 }
 
+.mensagem-formulario {
+    margin: 14px 0;
+    color: #0b397e;
+    line-height: 1.5;
+}
+
+.modal-acoes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.modal-acoes .botao-entrar {
+    width: auto;
+    margin: 0;
+    padding: 14px 22px;
+}
+
+#modal-salvar[hidden],
+#ver-resultado[hidden] {
+    display: none;
+}
+
 .modal-resumo {
     margin: 10px 0 22px;
     color: #647895;

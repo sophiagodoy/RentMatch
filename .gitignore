@@ -1,1 +1,3 @@
 /.venv/
+/modelo_ml/artefatos/
+__pycache__/

@@ -28,7 +28,7 @@ de R$ 1.111,27 e o erro percentual médio ficou em 24,96%.
 
 Ainda falta combinar com o grupo se esse erro é aceitável. O treino foi feito
 sem `--ajustar`, e os anúncios sem cidade informada foram mantidos.
-O arquivo `prever.py` continua vazio nesta versão.
+Na revisão original, o arquivo `prever.py` estava vazio. Ele foi implementado posteriormente para integrar a previsão ao formulário, com testes em `test_prever.py`.
 
 Os relatórios antigos de `validacao/` não foram substituídos. Os resultados
 desta revisão foram salvos fora do repositório.

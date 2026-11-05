@@ -630,6 +630,8 @@ export const EvaluationScalarFieldEnum = {
   valorEstimado: 'valorEstimado',
   classificacao: 'classificacao',
   fatores: 'fatores',
+  modelo: 'modelo',
+  saved: 'saved',
   createdAt: 'createdAt'
 } as const
 
@@ -649,6 +651,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -764,6 +774,13 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+
 
 /**
  * Batch Payload for updateMany & deleteMany & createMany
