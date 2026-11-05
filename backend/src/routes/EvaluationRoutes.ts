@@ -4,6 +4,12 @@ import { authMiddleware } from "../middleware/AuthMiddleware.js";
 
 const evaluationRoutes = Router();
 
+evaluationRoutes.get(
+    "/",
+    authMiddleware,
+    (req: Request, res: Response) => evaluationController.list(req, res)
+);
+
 evaluationRoutes.delete(
     "/:id",
     authMiddleware,

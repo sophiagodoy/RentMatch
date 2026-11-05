@@ -7,6 +7,25 @@ import { errorHandler } from "./middleware/ErrorHandler.js"
 const app = express()
 const port = process.env.PORT
 
+const frontendOrigins = new Set([
+    "http://localhost:5500",
+    "http://127.0.0.1:5500"
+]);
+
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+
+    if (origin && frontendOrigins.has(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Vary", "Origin");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    }
+
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+});
+
 app.use(express.json())
 app.use("/user", userRoutes)
 app.use("/evaluations", evaluationRoutes)

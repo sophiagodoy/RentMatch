@@ -67,7 +67,7 @@
                     <h2>Entrar</h2>
                     <p class="subtitulo">Acesse sua conta para continuar no RentMatch.</p>
 
-                    <form action="#" method="post">
+                    <form id="form-login" action="#" method="post">
                         <div class="grupo-formulario">
                             <label for="email">E-mail</label>
                             <div class="campo-formulario">
@@ -92,6 +92,7 @@
                         </div>
 
                         <button type="submit" class="botao-entrar">Entrar</button>
+                        <p id="mensagem-login" role="status" aria-live="polite"></p>
                     </form>
 
                     <div class="separador">
@@ -107,6 +108,7 @@
             </div>
         </div>
     </div>
+    <script src="../js/login.js"></script>
 </body>
 
 </html>

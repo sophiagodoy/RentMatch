@@ -101,7 +101,7 @@
                 <div class="cartao-resumo">
                     <div class="icone-resumo"><i class="bi bi-clipboard-data"></i></div>
                     <div>
-                        <strong>14</strong>
+                        <strong id="total-avaliacoes">0</strong>
                         <span>Total de avaliações</span>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                 <div class="cartao-resumo">
                     <div class="icone-resumo oportunidade"><i class="bi bi-stars"></i></div>
                     <div>
-                        <strong>5</strong>
+                        <strong id="total-oportunidades">0</strong>
                         <span>Oportunidades</span>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div class="cartao-resumo">
                     <div class="icone-resumo"><i class="bi bi-check2-circle"></i></div>
                     <div>
-                        <strong>6</strong>
+                        <strong id="total-preco-justo">0</strong>
                         <span>Preço justo</span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                 <div class="cartao-resumo">
                     <div class="icone-resumo caro"><i class="bi bi-exclamation-triangle"></i></div>
                     <div>
-                        <strong>3</strong>
+                        <strong id="total-caros">0</strong>
                         <span>Caros</span>
                     </div>
                 </div>
@@ -253,7 +253,7 @@
             <div class="cabecalho-secao">
                 <h2>Avaliações recentes</h2>
                 <!-- BACKEND: link para a tela de histórico completo -->
-                <a class="link-secao" href="#">Ver todas</a>
+                <button class="link-secao botao-link-secao" id="alternar-historico" type="button" aria-expanded="false">Ver todas</button>
             </div>
 
             <!-- BACKEND: gerar as linhas a partir das avaliações salvas do usuário -->
@@ -266,70 +266,10 @@
                             <th scope="col">Estimado</th>
                             <th scope="col">Classificação</th>
                             <th scope="col">Data</th>
-                            <th scope="col">Detalhes</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Cambuí</strong><small>2 quartos, 65 m²</small></td>
-                            <td>R$ 1.800</td>
-                            <td>R$ 1.650</td>
-                            <td><span class="selo selo-caro">Caro</span></td>
-                            <td>04/10/2026</td>
-                            <td>
-                                <button class="botao-detalhes" type="button" data-avaliacao="1"
-                                    aria-label="Ver detalhes da avaliação do imóvel no Cambuí"
-                                    title="Ver detalhes">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Taquaral</strong><small>1 quarto, 38 m²</small></td>
-                            <td>R$ 1.450</td>
-                            <td>R$ 1.520</td>
-                            <td><span class="selo selo-justo">Preço justo</span></td>
-                            <td>02/10/2026</td>
-                            <td>
-                                <button class="botao-detalhes" type="button" data-avaliacao="2"
-                                    aria-label="Ver detalhes da avaliação do imóvel no Taquaral"
-                                    title="Ver detalhes">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Barão Geraldo</strong><small>3 quartos, 90 m²</small></td>
-                            <td>R$ 2.900</td>
-                            <td>R$ 3.400</td>
-                            <td><span class="selo selo-oportunidade">Oportunidade</span></td>
-                            <td>29/09/2026</td>
-                            <td>
-                                <button class="botao-detalhes" type="button" data-avaliacao="3"
-                                    aria-label="Ver detalhes da avaliação do imóvel em Barão Geraldo"
-                                    title="Ver detalhes">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Centro</strong><small>2 quartos, 58 m²</small></td>
-                            <td>R$ 2.100</td>
-                            <td>R$ 2.050</td>
-                            <td><span class="selo selo-justo">Preço justo</span></td>
-                            <td>25/09/2026</td>
-                            <td>
-                                <button class="botao-detalhes" type="button" data-avaliacao="4"
-                                    aria-label="Ver detalhes da avaliação do imóvel no Centro"
-                                    title="Ver detalhes">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="lista-avaliacoes" aria-live="polite"></tbody>
                 </table>
             </div>
         </section>
@@ -370,121 +310,12 @@
             <section class="modal-fatores">
                 <h3>Fatores que influenciaram o valor</h3>
                 <ul id="modal-lista-fatores"></ul>
-                <p class="modal-aviso">
-                    Fatores e valores ilustrativos para demonstração; ainda não são calculados pelo modelo.
-                </p>
+                <p class="modal-aviso" id="modal-aviso"></p>
             </section>
         </div>
     </dialog>
 
-    <script>
-        // Dados de demonstração. Depois, podem ser substituídos pelos dados retornados pelo backend.
-        const avaliacoes = {
-            1: {
-                imovel: "Cambuí",
-                resumo: "Apartamento · 2 quartos · 65 m²",
-                anunciado: "R$ 1.800",
-                estimado: "R$ 1.650",
-                classificacao: "Caro",
-                fatores: [
-                    ["Localização", "Bairro do imóvel", "+ R$ 180"],
-                    ["Área", "65 m²", "+ R$ 320"],
-                    ["Taxas informadas", "Condomínio e IPTU", "− R$ 70"]
-                ]
-            },
-            2: {
-                imovel: "Taquaral",
-                resumo: "Apartamento · 1 quarto · 38 m²",
-                anunciado: "R$ 1.450",
-                estimado: "R$ 1.520",
-                classificacao: "Preço justo",
-                fatores: [
-                    ["Localização", "Bairro do imóvel", "+ R$ 120"],
-                    ["Área", "38 m²", "− R$ 90"],
-                    ["Quartos", "1 quarto", "− R$ 60"]
-                ]
-            },
-            3: {
-                imovel: "Barão Geraldo",
-                resumo: "Casa · 3 quartos · 90 m²",
-                anunciado: "R$ 2.900",
-                estimado: "R$ 3.400",
-                classificacao: "Oportunidade",
-                fatores: [
-                    ["Área", "90 m²", "+ R$ 420"],
-                    ["Quartos", "3 quartos", "+ R$ 280"],
-                    ["Localização", "Bairro do imóvel", "− R$ 150"]
-                ]
-            },
-            4: {
-                imovel: "Centro",
-                resumo: "Apartamento · 2 quartos · 58 m²",
-                anunciado: "R$ 2.100",
-                estimado: "R$ 2.050",
-                classificacao: "Preço justo",
-                fatores: [
-                    ["Localização", "Bairro do imóvel", "+ R$ 100"],
-                    ["Área", "58 m²", "+ R$ 160"],
-                    ["Taxas informadas", "Condomínio e IPTU", "− R$ 90"]
-                ]
-            }
-        };
-
-        const modal = document.querySelector("#modal-avaliacao");
-
-        document.querySelectorAll(".botao-detalhes").forEach((botao) => {
-            botao.addEventListener("click", () => {
-                const avaliacao = avaliacoes[botao.dataset.avaliacao];
-                if (!avaliacao) return;
-
-                document.querySelector("#modal-titulo").textContent = avaliacao.imovel;
-                document.querySelector("#modal-resumo").textContent = avaliacao.resumo;
-                document.querySelector("#modal-anunciado").textContent = avaliacao.anunciado;
-                document.querySelector("#modal-estimado").textContent = avaliacao.estimado;
-                document.querySelector("#modal-classificacao").textContent = avaliacao.classificacao;
-
-                const lista = document.querySelector("#modal-lista-fatores");
-                lista.replaceChildren();
-
-                avaliacao.fatores.forEach(([nome, descricao, impacto]) => {
-                    const item = document.createElement("li");
-                    item.className = "modal-fator";
-
-                    const texto = document.createElement("span");
-                    texto.className = "modal-fator-texto";
-
-                    const titulo = document.createElement("strong");
-                    titulo.textContent = nome;
-
-                    const detalhe = document.createElement("small");
-                    detalhe.textContent = descricao;
-
-                    const valor = document.createElement("strong");
-                    valor.className = impacto.startsWith("+")
-                        ? "fator-positivo"
-                        : "fator-negativo";
-                    valor.textContent = impacto;
-
-                    texto.append(titulo, detalhe);
-                    item.append(texto, valor);
-                    lista.append(item);
-                });
-
-                modal.showModal();
-            });
-        });
-
-        document.querySelector(".modal-fechar").addEventListener("click", () => {
-            modal.close();
-        });
-
-        // Fecha ao clicar na área escura ao redor da caixa.
-        modal.addEventListener("click", (evento) => {
-            if (evento.target === modal) {
-                modal.close();
-            }
-        });
-    </script>
+    <script src="../js/home.js"></script>
 </body>
 
 </html>
