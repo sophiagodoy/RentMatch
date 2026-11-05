@@ -19,4 +19,28 @@ model User {
   email String @unique
   password String
   createdAt DateTime @default(now())
+  evaluations Evaluation[]
+}
+
+model Evaluation {
+  @@map("evaluations")
+
+  id               String   @id @default(uuid())
+  userId           String
+  bairro           String
+  tipo             String
+  areaM2           Float
+  quartos          Int
+  vagas            Int
+  valorAnunciado   Decimal  @db.Decimal(12, 2)
+  condominio       Decimal? @db.Decimal(12, 2)
+  iptu             Decimal? @db.Decimal(12, 2)
+  valorEstimado    Decimal  @db.Decimal(12, 2)
+  classificacao    String
+  fatores          Json
+  createdAt        DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
