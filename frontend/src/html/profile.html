@@ -30,45 +30,49 @@
             <div class="menu menu-app">
                 <a href="home.html">Início</a>
                 <a href="home.html#avaliar">Avaliar</a>
-                <a href="home.html#historico">Histórico</a>
-                <a href="about.html">Sobre</a>
-                <!-- BACKEND: trocar "Lucas" pelo primeiro nome do usuario logado -->
-                <a class="botao-cadastro ativo" href="profile.html"><i class="bi bi-person-circle"></i>Lucas</a>
+                <a href="historico.html">Histórico</a>
+                <a class="botao-cadastro ativo" href="profile.html"><i class="bi bi-person-circle"></i><span data-usuario-nome>Meu perfil</span></a>
             </div>
         </div>
     </div>
 
     <!-- Conteudo principal -->
     <div class="conteudo-principal conteudo-interno">
+        <p class="aviso-sessao" id="aviso-sessao" role="status" hidden>
+            Não foi possível carregar os dados da sua conta.
+            <button class="link-secao botao-link-secao" id="recarregar-sessao" type="button">Tentar novamente</button>
+        </p>
         <div class="grade-perfil">
 
             <!-- Resumo do usuario -->
             <aside class="cartao perfil-lateral">
-                <!-- BACKEND: iniciais, nome, e-mail e data de cadastro do usuario logado -->
-                <div class="avatar" aria-hidden="true">LA</div>
-                <h1>Lucas Almeida</h1>
-                <p class="email">lucas.almeida@email.com</p>
-                <p class="desde">Membro desde setembro de 2026</p>
+                <div class="avatar" id="perfil-avatar" aria-hidden="true">…</div>
+                <h1 id="perfil-nome">Minha conta</h1>
+                <p class="email" id="perfil-email"></p>
+                <p class="desde" id="perfil-desde"></p>
 
                 <div class="perfil-numeros">
                     <div>
-                        <strong>14</strong>
+                        <strong id="perfil-total-avaliacoes">—</strong>
                         <span>Avaliações</span>
                     </div>
                     <div>
-                        <strong>5</strong>
+                        <strong id="perfil-total-oportunidades">—</strong>
                         <span>Oportunidades</span>
                     </div>
                     <div>
-                        <strong>3</strong>
+                        <strong id="perfil-total-caros">—</strong>
                         <span>Caros</span>
                     </div>
                 </div>
+                <p id="mensagem-resumo-perfil" role="status" hidden>
+                    Não foi possível carregar os totais.
+                    <button class="link-secao botao-link-secao" id="recarregar-resumo" type="button">Tentar novamente</button>
+                </p>
 
-                <a class="botao-secundario" href="home.html#historico">Ver meu histórico</a>
+                <a class="botao-secundario" href="historico.html">Ver meu histórico</a>
 
-                <!-- BACKEND: encerrar a sessao antes de redirecionar -->
-                <a class="link-sair" href="login.html"><i class="bi bi-box-arrow-right"></i>Sair da conta</a>
+                <a class="link-sair" href="login.html" data-sair><i class="bi bi-box-arrow-right"></i>Sair da conta</a>
             </aside>
 
             <div class="perfil-conteudo">
@@ -78,26 +82,30 @@
                     <h2>Dados pessoais</h2>
                     <p class="subtitulo">Mantenha seu nome e e-mail atualizados.</p>
 
-                    <form action="#" method="post">
-                        <div class="grupo-formulario">
-                            <label for="nome">Nome completo</label>
-                            <div class="campo-formulario">
-                                <i class="bi bi-person"></i>
-                                <input type="text" id="nome" name="nome" value="Lucas Almeida"
-                                    placeholder="Digite seu nome">
+                    <form id="form-perfil" action="#" method="post">
+                        <fieldset class="campos-perfil" id="campos-perfil" disabled>
+                            <legend class="visually-hidden">Dados pessoais</legend>
+                            <div class="grupo-formulario">
+                                <label for="nome">Nome completo</label>
+                                <div class="campo-formulario">
+                                    <i class="bi bi-person"></i>
+                                    <input type="text" id="nome" name="nome" autocomplete="name" minlength="2"
+                                        placeholder="Digite seu nome" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="grupo-formulario">
-                            <label for="email">E-mail</label>
-                            <div class="campo-formulario">
-                                <i class="bi bi-envelope"></i>
-                                <input type="email" id="email" name="email" value="lucas.almeida@email.com"
-                                    placeholder="seu@email.com">
+                            <div class="grupo-formulario">
+                                <label for="email">E-mail</label>
+                                <div class="campo-formulario">
+                                    <i class="bi bi-envelope"></i>
+                                    <input type="email" id="email" name="email" autocomplete="email"
+                                        placeholder="seu@email.com" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="botao-entrar botao-formulario">Salvar alterações</button>
+                            <button type="submit" class="botao-entrar botao-formulario">Salvar alterações</button>
+                        </fieldset>
+                        <p id="mensagem-perfil" role="status" aria-live="polite"></p>
                     </form>
                 </section>
 
@@ -106,38 +114,42 @@
                     <h2>Alterar senha</h2>
                     <p class="subtitulo">Use uma senha que você não utiliza em outros sites.</p>
 
-                    <form action="#" method="post">
-                        <div class="grupo-formulario">
-                            <label for="senha-atual">Senha atual</label>
-                            <div class="campo-formulario">
-                                <i class="bi bi-lock"></i>
-                                <input type="password" id="senha-atual" name="senha-atual"
-                                    placeholder="Digite sua senha atual">
-                                <i class="bi bi-eye-slash"></i>
+                    <form id="form-senha" action="#" method="post">
+                        <fieldset class="campos-perfil" id="campos-senha" disabled>
+                            <legend class="visually-hidden">Alterar senha</legend>
+                            <div class="grupo-formulario">
+                                <label for="senha-atual">Senha atual</label>
+                                <div class="campo-formulario">
+                                    <i class="bi bi-lock"></i>
+                                    <input type="password" id="senha-atual" name="senha-atual"
+                                        placeholder="Digite sua senha atual" autocomplete="current-password" required>
+                                    <i class="bi bi-eye-slash"></i>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="grupo-formulario">
-                            <label for="nova-senha">Nova senha</label>
-                            <div class="campo-formulario">
-                                <i class="bi bi-lock"></i>
-                                <input type="password" id="nova-senha" name="nova-senha"
-                                    placeholder="Crie uma nova senha">
-                                <i class="bi bi-eye-slash"></i>
+                            <div class="grupo-formulario">
+                                <label for="nova-senha">Nova senha</label>
+                                <div class="campo-formulario">
+                                    <i class="bi bi-lock"></i>
+                                    <input type="password" id="nova-senha" name="nova-senha"
+                                        placeholder="Crie uma nova senha" autocomplete="new-password" minlength="6" required>
+                                    <i class="bi bi-eye-slash"></i>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="grupo-formulario">
-                            <label for="confirmar-nova-senha">Confirmar nova senha</label>
-                            <div class="campo-formulario">
-                                <i class="bi bi-lock"></i>
-                                <input type="password" id="confirmar-nova-senha" name="confirmar-nova-senha"
-                                    placeholder="Repita a nova senha">
-                                <i class="bi bi-eye"></i>
+                            <div class="grupo-formulario">
+                                <label for="confirmar-nova-senha">Confirmar nova senha</label>
+                                <div class="campo-formulario">
+                                    <i class="bi bi-lock"></i>
+                                    <input type="password" id="confirmar-nova-senha" name="confirmar-nova-senha"
+                                        placeholder="Repita a nova senha" autocomplete="new-password" minlength="6" required>
+                                    <i class="bi bi-eye"></i>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="botao-entrar botao-formulario">Alterar senha</button>
+                            <button type="submit" class="botao-entrar botao-formulario">Alterar senha</button>
+                        </fieldset>
+                        <p id="mensagem-senha" role="status" aria-live="polite"></p>
                     </form>
                 </section>
 
@@ -152,6 +164,8 @@
             </div>
         </div>
     </div>
+    <script src="../js/sessao.js"></script>
+    <script src="../js/profile.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentMatch - Histórico completo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/app.css">
+</head>
+
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <a class="logo" href="home.html">
+                <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                Rent<span>Match</span>
+            </a>
+            <nav class="menu menu-app" aria-label="Menu principal">
+                <a href="home.html">Início</a>
+                <a href="home.html#avaliar">Avaliar</a>
+                <a class="ativo" href="historico.html" aria-current="page">Histórico</a>
+                <a class="botao-cadastro" href="profile.html">
+                    <i class="bi bi-person-circle" aria-hidden="true"></i><span data-usuario-nome>Meu perfil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo-principal conteudo-interno">
+        <p class="aviso-sessao" id="aviso-sessao" role="status" hidden>
+            Não foi possível carregar os dados da sua conta.
+            <button class="link-secao botao-link-secao" id="recarregar-sessao" type="button">Tentar novamente</button>
+        </p>
+        <div class="cabecalho-historico">
+            <div>
+                <a class="link-secao" href="home.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao início</a>
+                <h1>Histórico completo</h1>
+                <p>Consulte suas avaliações salvas e abra os detalhes de cada imóvel.</p>
+            </div>
+            <a class="botao-entrar botao-formulario" href="home.html#avaliar">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i> Nova avaliação
+            </a>
+        </div>
+
+        <section aria-label="Resumo de todas as avaliações salvas">
+            <div class="cartoes-resumo">
+                <div class="cartao-resumo">
+                    <div class="icone-resumo"><i class="bi bi-clipboard-data" aria-hidden="true"></i></div>
+                    <div><strong id="total-avaliacoes">—</strong><span>Total de avaliações</span></div>
+                </div>
+                <div class="cartao-resumo">
+                    <div class="icone-resumo oportunidade"><i class="bi bi-stars" aria-hidden="true"></i></div>
+                    <div><strong id="total-oportunidades">—</strong><span>Oportunidades</span></div>
+                </div>
+                <div class="cartao-resumo">
+                    <div class="icone-resumo"><i class="bi bi-check2-circle" aria-hidden="true"></i></div>
+                    <div><strong id="total-preco-justo">—</strong><span>Preço justo</span></div>
+                </div>
+                <div class="cartao-resumo">
+                    <div class="icone-resumo caro"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div>
+                    <div><strong id="total-caros">—</strong><span>Caros</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cartao" aria-labelledby="titulo-avaliacoes-salvas">
+            <h2 id="titulo-avaliacoes-salvas">Avaliações salvas</h2>
+            <p class="subtitulo">Encontre uma avaliação para rever os valores e entender o resultado.</p>
+
+            <form id="form-filtros-historico" role="search" aria-label="Filtrar avaliações salvas">
+                <fieldset class="filtros-historico" id="filtros-historico" disabled>
+                    <legend class="visually-hidden">Busca, classificação e ordenação</legend>
+                    <div class="grupo-formulario">
+                        <label for="busca-historico">Buscar imóvel</label>
+                        <div class="campo-formulario">
+                            <i class="bi bi-search" aria-hidden="true"></i>
+                            <input type="search" id="busca-historico" placeholder="Bairro ou tipo de imóvel" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="classificacao-historico">Classificação</label>
+                        <div class="campo-formulario">
+                            <select id="classificacao-historico">
+                                <option value="">Todas</option>
+                                <option value="Oportunidade">Oportunidade</option>
+                                <option value="Preço Justo">Preço justo</option>
+                                <option value="Caro">Caro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="ordenacao-historico">Ordenar por</label>
+                        <div class="campo-formulario">
+                            <select id="ordenacao-historico">
+                                <option value="recentes">Mais recentes</option>
+                                <option value="antigas">Mais antigas</option>
+                                <option value="menorValor">Menor valor anunciado</option>
+                                <option value="maiorValor">Maior valor anunciado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="link-secao botao-link-secao" id="limpar-filtros" type="button">Limpar filtros</button>
+                </fieldset>
+            </form>
+
+            <p class="contagem-historico" id="contagem-historico" role="status">Carregando seu histórico...</p>
+            <div class="tabela-rolagem" tabindex="0" role="region" aria-label="Tabela de avaliações salvas">
+                <table class="tabela">
+                    <caption class="visually-hidden">Avaliações salvas com valores, classificação, data e ações para consultar ou excluir.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Imóvel</th>
+                            <th scope="col">Anunciado</th>
+                            <th scope="col">Estimado</th>
+                            <th scope="col">Classificação</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-avaliacoes" aria-live="polite" aria-busy="true"></tbody>
+                </table>
+            </div>
+
+            <nav class="paginacao-historico" id="paginacao-historico" aria-label="Páginas de avaliações" hidden>
+                <button class="botao-pagina" id="pagina-anterior" type="button" disabled>
+                    <i class="bi bi-chevron-left" aria-hidden="true"></i> Anterior
+                </button>
+                <span id="pagina-atual">Página 1 de 1</span>
+                <button class="botao-pagina" id="pagina-proxima" type="button" disabled>
+                    Próxima <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                </button>
+            </nav>
+        </section>
+        <noscript>Ative o JavaScript no navegador para consultar suas avaliações salvas.</noscript>
+    </main>
+
+    <dialog class="modal-avaliacao" id="modal-avaliacao" aria-labelledby="modal-titulo" aria-describedby="modal-resumo">
+        <div class="modal-avaliacao-conteudo">
+            <div class="modal-avaliacao-cabecalho">
+                <div>
+                    <p class="modal-etiqueta">Detalhes da avaliação</p>
+                    <h2 id="modal-titulo">Imóvel</h2>
+                </div>
+                <button class="modal-fechar" type="button" aria-label="Fechar detalhes" autofocus>
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+            <p id="modal-resumo" class="modal-resumo"></p>
+            <p id="modal-data" class="modal-data"></p>
+            <div class="modal-valores">
+                <div><span>Valor anunciado</span><strong id="modal-anunciado"></strong></div>
+                <div><span>Valor estimado</span><strong id="modal-estimado"></strong></div>
+                <div><span>Classificação</span><strong id="modal-classificacao"></strong></div>
+            </div>
+            <p id="modal-diferenca" class="modal-diferenca"></p>
+            <dl class="modal-taxas">
+                <div><dt>Condomínio informado</dt><dd id="modal-condominio"></dd></div>
+                <div><dt>IPTU informado</dt><dd id="modal-iptu"></dd></div>
+            </dl>
+            <section class="modal-fatores">
+                <h3>Fatores que influenciaram o valor</h3>
+                <ul id="modal-lista-fatores"></ul>
+                <p class="modal-aviso" id="modal-aviso"></p>
+            </section>
+        </div>
+    </dialog>
+
+    <script src="../js/sessao.js"></script>
+    <script src="../js/avaliacoes.js"></script>
+    <script src="../js/historico.js"></script>
+</body>
+
+</html>

@@ -28,7 +28,6 @@
             <div class="menu">
                 <a href="#">Início</a>
                 <a href="about.html">Sobre</a>
-                <a href="#">Contato</a>
                 <a class="botao-cadastro" href="login.html">Entrar</a>
             </div>
         </div>
@@ -72,40 +71,46 @@
                     <h2>Criar conta</h2>
                     <p class="subtitulo">Cadastre-se para começar a usar o RentMatch.</p>
 
-                    <form action="#" method="post">
+                    <form id="form-cadastro" action="#" method="post">
                         <div class="grupo-formulario">
                             <label for="nome">Nome completo</label>
                             <div class="campo-formulario campo-sem-icone">
-                                <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+                                <input type="text" id="nome" name="nome" placeholder="Digite seu nome"
+                                    autocomplete="name" minlength="2" required>
                             </div>
                         </div>
 
                         <div class="grupo-formulario">
                             <label for="email">E-mail</label>
                             <div class="campo-formulario campo-sem-icone">
-                                <input type="email" id="email" name="email" placeholder="seu@email.com">
+                                <input type="email" id="email" name="email" placeholder="seu@email.com"
+                                    autocomplete="email" required>
                             </div>
                         </div>
 
                         <div class="grupo-formulario">
                             <label for="senha">Senha</label>
                             <div class="campo-formulario campo-sem-icone">
-                                <input type="password" id="senha" name="senha" placeholder="Crie uma senha">
+                                <input type="password" id="senha" name="senha" placeholder="Crie uma senha"
+                                    autocomplete="new-password" minlength="6" aria-describedby="ajuda-senha" required>
                                 <i class="bi bi-eye-slash"></i>
                             </div>
+                            <small id="ajuda-senha">Use pelo menos 6 caracteres.</small>
                         </div>
 
                         <div class="grupo-formulario">
                             <label for="confirmar-senha">Confirmar senha</label>
                             <div class="campo-formulario campo-sem-icone">
                                 <input type="password" id="confirmar-senha" name="confirmar-senha"
-                                    placeholder="Repita sua senha">
+                                    placeholder="Repita sua senha" autocomplete="new-password" minlength="6" required>
                                 <i class="bi bi-eye"></i>
                             </div>
                         </div>
 
                         <button type="submit" class="botao-entrar">Cadastrar</button>
+                        <p id="mensagem-cadastro" role="status" aria-live="polite"></p>
                     </form>
+                    <noscript>Ative o JavaScript no navegador para criar sua conta.</noscript>
 
                     <div class="separador">
                         <hr>
@@ -120,6 +125,7 @@
             </div>
         </div>
     </div>
+    <script src="../js/signup.js"></script>
 </body>
 
 </html>

@@ -2,6 +2,10 @@ const API_BASE_URL = "http://localhost:3000";
 const formLogin = document.querySelector("#form-login");
 const mensagemLogin = document.querySelector("#mensagem-login");
 
+if (new URLSearchParams(window.location.search).get("cadastro") === "sucesso") {
+    mensagemLogin.textContent = "Conta criada com sucesso! Entre com seu e-mail e senha.";
+}
+
 formLogin.addEventListener("submit", async (evento) => {
     evento.preventDefault();
     mensagemLogin.textContent = "Entrando...";

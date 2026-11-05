@@ -17,9 +17,9 @@ export class UserService {
     async login(data: UserLoginDTO) {
         const {email, password} = data
         const user = await this.userRepository.findByEmail(email)
-        if (!user) throw new Error("Email ou senha incorretos")
+        if (!user) throw new AppError("E-mail ou senha incorretos", 401)
         const passwordCorrect = await compare(password, user.password)
-        if (!passwordCorrect) throw new Error("Email ou senha incorretos")
+        if (!passwordCorrect) throw new AppError("E-mail ou senha incorretos", 401)
         const token = await generateToken(user.id)
         return token
     }

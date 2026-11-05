@@ -1,5 +1,5 @@
 /* =========================================================
-   RentMatch - estilos das telas internas (home e perfil)
+   RentMatch - estilos das telas internas (home, histórico e perfil)
 
    Carregar DEPOIS do style.css. Reaproveita a mesma fonte (Arial),
    as mesmas cores e os componentes que já existem (cabecalho, logo,
@@ -572,6 +572,29 @@ a.botao-entrar {
 }
 
 /* ---------- Perfil ---------- */
+.aviso-sessao {
+    margin: 0;
+    padding: 16px;
+    color: #0b397e;
+    background: #e5f1fe;
+    border-radius: 8px;
+}
+
+.aviso-sessao button {
+    margin-left: 8px;
+}
+
+.campos-perfil {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.campos-perfil:disabled {
+    opacity: 0.6;
+}
+
 .grade-perfil {
     display: grid;
     grid-template-columns: 340px 1fr;
@@ -850,6 +873,24 @@ a.botao-entrar {
     font-size: 16px;
 }
 
+.modal-valores strong.selo {
+    width: fit-content;
+    font-size: 14px;
+    white-space: normal;
+}
+
+.modal-valores .selo-caro {
+    color: #b63232;
+}
+
+.modal-valores .selo-justo {
+    color: #0b5fc4;
+}
+
+.modal-valores .selo-oportunidade {
+    color: #1b7f4a;
+}
+
 .modal-fatores {
     margin-top: 25px;
 }
@@ -941,4 +982,170 @@ a.botao-entrar {
 .botao-excluir:disabled {
     cursor: wait;
     opacity: 0.6;
+}
+
+/* ---------- Histórico completo ---------- */
+.cabecalho-historico {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.cabecalho-historico h1 {
+    margin: 18px 0 10px;
+    color: #0b397e;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.cabecalho-historico p {
+    margin: 0;
+    color: #647895;
+    font-size: 18px;
+}
+
+.cabecalho-historico .botao-entrar {
+    margin: 0;
+}
+
+.filtros-historico {
+    display: grid;
+    grid-template-columns: minmax(200px, 1.4fr) minmax(150px, 1fr) minmax(180px, 1.2fr) auto;
+    align-items: end;
+    gap: 18px;
+    min-width: 0;
+    margin: 0 0 24px;
+    padding: 0;
+    border: 0;
+}
+
+.filtros-historico .grupo-formulario {
+    min-width: 0;
+    margin: 0;
+}
+
+.filtros-historico .campo-formulario input,
+.filtros-historico .campo-formulario select {
+    min-width: 0;
+    min-height: 48px;
+    font-size: 16px;
+}
+
+.filtros-historico > button {
+    min-height: 48px;
+}
+
+.filtros-historico:disabled {
+    opacity: 0.6;
+}
+
+.contagem-historico {
+    margin: 0 0 20px;
+    color: #647895;
+    font-size: 15px;
+}
+
+.mensagem-avaliacoes {
+    text-align: center;
+    color: #647895;
+}
+
+.mensagem-avaliacoes p {
+    margin: 10px 0;
+}
+
+.paginacao-historico {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 24px;
+    color: #647895;
+    font-size: 15px;
+}
+
+.paginacao-historico[hidden] {
+    display: none;
+}
+
+.botao-pagina {
+    padding: 10px 14px;
+    color: #0877ee;
+    background: white;
+    border: 1px solid #bdcde0;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.botao-pagina:hover:not(:disabled) {
+    background: #e5f1fe;
+}
+
+.botao-pagina:disabled {
+    color: #647895;
+    cursor: default;
+    opacity: 0.5;
+}
+
+.modal-resumo {
+    margin-bottom: 8px;
+}
+
+.modal-data {
+    margin: 0 0 22px;
+    color: #647895;
+    font-size: 13px;
+}
+
+.modal-diferenca {
+    margin: 16px 0;
+    color: #0b397e;
+    font-weight: bold;
+}
+
+.modal-taxas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid #e3ecf5;
+}
+
+.modal-taxas dt {
+    color: #647895;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.modal-taxas dd {
+    margin: 5px 0 0;
+    font-weight: bold;
+}
+
+@media (max-width: 1000px) {
+    .filtros-historico {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .cabecalho-historico h1 {
+        font-size: 30px;
+    }
+
+    .filtros-historico,
+    .modal-taxas {
+        grid-template-columns: 1fr;
+    }
+
+    .paginacao-historico {
+        justify-content: center;
+        gap: 10px;
+    }
 }

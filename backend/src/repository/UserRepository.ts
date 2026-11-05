@@ -43,7 +43,7 @@ export class UserRepository {
         const userFound = await prisma.user.findUnique({
             where: {email}
         })
-        return UserEntitySchema.parse(userFound)
+        return userFound ? UserEntitySchema.parse(userFound) : null
     }
 
     async delete(id: string) {

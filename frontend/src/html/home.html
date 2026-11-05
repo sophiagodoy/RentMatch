@@ -29,11 +29,9 @@
             <div class="menu menu-app">
                 <a class="ativo" href="home.html">Início</a>
                 <a href="#avaliar">Avaliar</a>
-                <a href="#historico">Histórico</a>
-                <a href="about.html">Sobre</a>
-                <!-- BACKEND: trocar "Lucas" pelo primeiro nome do usuário logado -->
+                <a href="historico.html">Histórico</a>
                 <a class="botao-cadastro" href="profile.html">
-                    <i class="bi bi-person-circle"></i>Lucas
+                    <i class="bi bi-person-circle"></i><span data-usuario-nome>Meu perfil</span>
                 </a>
             </div>
         </div>
@@ -41,13 +39,16 @@
 
     <!-- Conteúdo principal -->
     <div class="conteudo-principal conteudo-interno">
+        <p class="aviso-sessao" id="aviso-sessao" role="status" hidden>
+            Não foi possível carregar os dados da sua conta.
+            <button class="link-secao botao-link-secao" id="recarregar-sessao" type="button">Tentar novamente</button>
+        </p>
 
         <!-- Boas-vindas -->
         <section class="boas-vindas">
             <div class="boas-vindas-conteudo">
                 <div>
-                    <!-- BACKEND: nome do usuário logado -->
-                    <p class="saudacao">Olá, Lucas!</p>
+                    <p class="saudacao" data-usuario-saudacao>Olá!</p>
                     <h1>Esse aluguel está justo? Descubra em segundos.</h1>
                     <p class="descricao">
                         Informe os dados do imóvel e veja o valor estimado, a classificação da oferta
@@ -58,7 +59,7 @@
                         <a class="botao-claro" href="#avaliar">
                             <i class="bi bi-search"></i>Avaliar um imóvel
                         </a>
-                        <a class="botao-contorno-claro" href="#historico">Ver histórico</a>
+                        <a class="botao-contorno-claro" href="historico.html">Ver histórico</a>
                     </div>
                 </div>
 
@@ -252,8 +253,7 @@
         <section class="cartao" id="historico">
             <div class="cabecalho-secao">
                 <h2>Avaliações recentes</h2>
-                <!-- BACKEND: link para a tela de histórico completo -->
-                <button class="link-secao botao-link-secao" id="alternar-historico" type="button" aria-expanded="false">Ver todas</button>
+                <a class="link-secao" href="historico.html">Ver histórico completo</a>
             </div>
 
             <!-- BACKEND: gerar as linhas a partir das avaliações salvas do usuário -->
@@ -291,6 +291,7 @@
             </div>
 
             <p id="modal-resumo" class="modal-resumo"></p>
+            <p id="modal-data" class="modal-data"></p>
 
             <div class="modal-valores">
                 <div>
@@ -307,6 +308,18 @@
                 </div>
             </div>
 
+            <p id="modal-diferenca" class="modal-diferenca"></p>
+            <dl class="modal-taxas">
+                <div>
+                    <dt>Condomínio informado</dt>
+                    <dd id="modal-condominio"></dd>
+                </div>
+                <div>
+                    <dt>IPTU informado</dt>
+                    <dd id="modal-iptu"></dd>
+                </div>
+            </dl>
+
             <section class="modal-fatores">
                 <h3>Fatores que influenciaram o valor</h3>
                 <ul id="modal-lista-fatores"></ul>
@@ -315,6 +328,8 @@
         </div>
     </dialog>
 
+    <script src="../js/sessao.js"></script>
+    <script src="../js/avaliacoes.js"></script>
     <script src="../js/home.js"></script>
 </body>
 

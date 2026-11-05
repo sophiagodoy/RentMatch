@@ -30,6 +30,7 @@ Desenvolver um sistema web inteligente para estimativa e classificação de valo
 - **Resultado** — valor estimado e classificação (Caro / Preço Justo / Oportunidade)
 - **Explicabilidade (XAI)** — fatores que mais influenciaram a estimativa
 - **Dashboard** — histórico de avaliações do usuário
+- **Histórico completo** — acesso às avaliações salvas, busca por bairro ou tipo, filtro por classificação, ordenação e consulta dos detalhes
 
 ## Metodologia
 
@@ -45,6 +46,7 @@ O desenvolvimento seguiu a metodologia **SCRUM**, organizada em sprints com entr
 
 ## Como executar
 
+Com o backend configurado e rodando na porta 3000, acesse **http://localhost:3000/** para abrir o login. O backend também serve os arquivos do frontend.
 
 ```bash
 

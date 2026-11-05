@@ -12,7 +12,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U usuario -d meubanco"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rentmatch"]
       interval: 5s
       timeout: 5s
       retries: 5

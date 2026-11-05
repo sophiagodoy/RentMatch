@@ -38,5 +38,5 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }, "exclude": ["prisma.config.ts", "node_modules"]
+  }, "exclude": ["prisma7.config.ts", "node_modules"]
 }
